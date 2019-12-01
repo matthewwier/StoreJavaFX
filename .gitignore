@@ -1,0 +1,14 @@
+*.idea
+*/target/*
+*/out/*
+out/
+*.iml
+openjfx-11.0.2_windows-x64_bin-sdk
+FactoryMethod.iml
+pom.xml
+*/build/*
+.gradle
+gradle
+settings.gradle
+gradlew
+gradlew.bat
