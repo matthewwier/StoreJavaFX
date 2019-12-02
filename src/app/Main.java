@@ -22,7 +22,15 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.Iterator;
 
@@ -49,6 +57,25 @@ public class Main extends Application {
                 new Item("Krzesło", "4", "Czarne"));
     }
 
+
+    public void addDataFromXMLFile() throws ParserConfigurationException, IOException, SAXException {
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        Document document = dBuilder.parse(this.xmlFile);
+        document.getDocumentElement().normalize();
+        NodeList nodeList = document.getElementsByTagName("item");
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node node = nodeList.item(i);
+
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element xmlElement = (Element) node;
+                String name = xmlElement.getElementsByTagName("name").item(0).getTextContent();
+                String amount = xmlElement.getElementsByTagName("amount").item(0).getTextContent();
+                String desc = xmlElement.getElementsByTagName("description").item(0).getTextContent();
+                data.add(new Item(name, amount, desc));
+            }
+        }
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -90,7 +117,7 @@ public class Main extends Application {
         return gridPane;
     }
 
-    private void addLoginFormControls(GridPane gridPane, Stage actualStage) {
+    private void addLoginFormControls(GridPane gridPane, Stage actualStage) throws IOException, SAXException, ParserConfigurationException {
 
         Label headerLabel = new Label("ZALOGUJ SIĘ");
         headerLabel.setFont(Font.font("Helvetica", FontWeight.BOLD, 24));
@@ -127,8 +154,9 @@ public class Main extends Application {
         addUserFormControls(userPane, actualStage);
 
         userScene = new Scene(userPane, 800, 400);
-        submitButton.setOnAction(e -> actualStage.setScene(userScene));
-
+        submitButton.setOnAction(e ->
+                actualStage.setScene(userScene)
+        );
         gridPane.add(submitButton, 0, 3, 2, 1);
         GridPane.setHalignment(submitButton, HPos.CENTER);
         GridPane.setMargin(submitButton, new Insets(20, 0, 20, 0));
@@ -175,12 +203,13 @@ public class Main extends Application {
                         String line;
                         StringBuilder content = new StringBuilder();
                         while ((line = bufferedReader.readLine()) != null) {
-                            content.append(line);
+                            content.append(line).append("\n");
                         }
-                        String filteredContent = content.toString().replaceAll(" ", "");
-                        System.out.println(filteredContent);
-                        textAreaXML.setText(filteredContent);
-                    } catch (IOException ex) {
+                        //String filteredContent = content.toString().replaceAll(" ", "");
+                        System.out.println(content.toString());
+                        textAreaXML.setText(content.toString());
+                        addDataFromXMLFile();
+                    } catch (IOException | ParserConfigurationException | SAXException ex) {
                         ex.printStackTrace();
                     }
 

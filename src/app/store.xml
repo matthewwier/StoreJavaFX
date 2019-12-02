@@ -2,19 +2,19 @@
 <store>
     <items>
         <item>
-            <name></name>
-            <amount></amount>
-            <description></description>
+            <name>Samochód</name>
+            <amount>10</amount>
+            <description>Czarny</description>
         </item>
         <item>
-            <name></name>
-            <amount></amount>
-            <description></description>
+            <name>Opona</name>
+            <amount>200</amount>
+            <description>Z bieżnikiem</description>
         </item>
         <item>
-            <name></name>
-            <amount></amount>
-            <description></description>
+            <name>Lusterko</name>
+            <amount>400</amount>
+            <description>Kwadratowe</description>
         </item>
     </items>
 </store>
