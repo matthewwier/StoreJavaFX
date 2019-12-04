@@ -1,4 +1,4 @@
-package dataClass;
+package item;
 
 import javafx.beans.property.SimpleStringProperty;
 

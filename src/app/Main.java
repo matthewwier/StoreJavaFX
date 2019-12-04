@@ -1,6 +1,6 @@
 package app;
 
-import dataClass.Item;
+import item.Item;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,7 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -27,21 +26,27 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import users.User;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
+import static loginForm.LoginForm.LoginForm;
+import static userForm.UserForm.UserForm;
+import static xmloperations.XMLOperations.addDataFromXMLFile;
 
 public class Main extends Application {
 
     private Stage actualStage;
     private Scene loginScene;
     private Scene userScene;
-    private Scene storeTable;
 
-
+    private List<User> userList;
     private final ObservableList<Item> data =
             FXCollections.observableArrayList();
     private HBox hb;
@@ -58,27 +63,15 @@ public class Main extends Application {
     }
 
 
-    public void addDataFromXMLFile() throws ParserConfigurationException, IOException, SAXException {
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        Document document = dBuilder.parse(this.xmlFile);
-        document.getDocumentElement().normalize();
-        NodeList nodeList = document.getElementsByTagName("item");
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            Node node = nodeList.item(i);
-
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element xmlElement = (Element) node;
-                String name = xmlElement.getElementsByTagName("name").item(0).getTextContent();
-                String amount = xmlElement.getElementsByTagName("amount").item(0).getTextContent();
-                String desc = xmlElement.getElementsByTagName("description").item(0).getTextContent();
-                data.add(new Item(name, amount, desc));
-            }
-        }
+    public void addUsers() {
+        userList = new ArrayList<>();
+        userList.add(new User("danny", "danny", "danny@gmail.com"));
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        addUsers();
         fillArrayList();
         actualStage = primaryStage;
         actualStage.setTitle("Aplikacja do zarządzania magazynem");
@@ -87,7 +80,6 @@ public class Main extends Application {
         addLoginFormControls(gridPane, actualStage);
         loginScene = new Scene(gridPane, 800, 400);
         actualStage.setScene(loginScene);
-        actualStage.setScene(loginScene);
 
         actualStage.show();
 
@@ -95,26 +87,6 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    private GridPane LoginForm() {
-
-        GridPane gridPane = new GridPane();
-        // GridPane of TOP_CENTER
-        gridPane.setAlignment(Pos.TOP_CENTER);
-        gridPane.setPadding(new Insets(40, 40, 40, 40));
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-
-        ColumnConstraints columnOneConstraints = new ColumnConstraints(100, 100, Double.MAX_VALUE);
-        columnOneConstraints.setHalignment(HPos.RIGHT);
-
-        ColumnConstraints columnTwoConstrains = new ColumnConstraints(200, 200, Double.MAX_VALUE);
-        columnTwoConstrains.setHgrow(Priority.ALWAYS);
-
-        gridPane.getColumnConstraints().addAll(columnOneConstraints, columnTwoConstrains);
-
-        return gridPane;
     }
 
     private void addLoginFormControls(GridPane gridPane, Stage actualStage) throws IOException, SAXException, ParserConfigurationException {
@@ -126,7 +98,7 @@ public class Main extends Application {
         GridPane.setMargin(headerLabel, new Insets(20, 0, 20, 0));
 
 
-        Label nameLabel = new Label("Your name:");
+        Label nameLabel = new Label("Username:");
         nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
         gridPane.add(nameLabel, 0, 1);
 
@@ -144,7 +116,7 @@ public class Main extends Application {
         passwordField.setPrefHeight(40);
         gridPane.add(passwordField, 1, 2);
 
-        Button submitButton = new Button("Login");
+        Button submitButton = new Button("Log in");
         submitButton.setPrefHeight(40);
         submitButton.setDefaultButton(true);
         submitButton.setPrefWidth(100);
@@ -155,40 +127,28 @@ public class Main extends Application {
 
         userScene = new Scene(userPane, 800, 400);
         submitButton.setOnAction(e ->
-                actualStage.setScene(userScene)
-        );
+        {
+            String typedLogin = nameField.getText();
+            String typedPassword = passwordField.getText();
+            for (User user : userList) {
+                if (user.getLogin().equals(typedLogin)) {
+                    if (user.getPassword().equals(typedPassword)) {
+                        actualStage.setScene(userScene);
+                    }
+                }
+            }
+        });
         gridPane.add(submitButton, 0, 3, 2, 1);
         GridPane.setHalignment(submitButton, HPos.CENTER);
         GridPane.setMargin(submitButton, new Insets(20, 0, 20, 0));
     }
 
-    private GridPane UserForm() {
-        GridPane gridPane = new GridPane();
-        gridPane.setAlignment(Pos.TOP_CENTER);
-        gridPane.setPadding(new Insets(40, 40, 40, 40));
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-
-        ColumnConstraints columnOneConstraints = new ColumnConstraints(200, 100, Double.MAX_VALUE);
-        columnOneConstraints.setHalignment(HPos.RIGHT);
-
-        ColumnConstraints columnTwoConstrains = new ColumnConstraints(200, 200, Double.MAX_VALUE);
-        columnTwoConstrains.setHgrow(Priority.ALWAYS);
-
-        gridPane.getColumnConstraints().addAll(columnOneConstraints, columnTwoConstrains);
-
-        return gridPane;
-    }
-
     private void addUserFormControls(GridPane userPane, Stage actualStage) {
-        Label infoLabel = new Label("Prześlij plik w formacie XML.");
-        infoLabel.setFont(Font.font("Helvetica", FontWeight.BOLD, 24));
-        userPane.add(infoLabel, 0, 0, 2, 1);
+        Label infoLabel = new Label("Content of your XML file:");
+        infoLabel.setFont(Font.font("Helvetica", FontWeight.BOLD, 20));
+        userPane.add(infoLabel, 1, 0, 2, 1);
         GridPane.setHalignment(infoLabel, HPos.CENTER);
         GridPane.setMargin(infoLabel, new Insets(20, 0, 20, 0));
-        Button selectFileButton = new Button();
-        selectFileButton.setText("Select XML file");
-        userPane.add(selectFileButton, 1, 1);
 
         FileChooser fileChooser = new FileChooser();
 
@@ -208,20 +168,29 @@ public class Main extends Application {
                         //String filteredContent = content.toString().replaceAll(" ", "");
                         System.out.println(content.toString());
                         textAreaXML.setText(content.toString());
-                        addDataFromXMLFile();
+                        // parse XML
+                        addDataFromXMLFile(xmlFile, data);
                     } catch (IOException | ParserConfigurationException | SAXException ex) {
                         ex.printStackTrace();
                     }
 
 
                 });
-        userPane.add(openButton, 0, 2);
+        openButton.setMinWidth(150);
+        VBox vbox = new VBox();
+        Button closeAppButton = new Button("Close app");
+        closeAppButton.setMinWidth(150);
+        vbox.getChildren().addAll(openButton, closeAppButton);
+
+        userPane.add(vbox, 0, 2);
         userPane.add(textAreaXML, 1, 2);
         Button back = new Button();
         back.setText("To Store");
         back.setOnAction(e -> {
             actualStage.setScene(getStoreScene(actualStage));
         });
+
+
         userPane.add(back, 3, 2);
 
     }
@@ -282,7 +251,8 @@ public class Main extends Application {
         });
 
         final TextField deleteName = new TextField();
-        deleteName.setPromptText("Name");
+        deleteName.setPromptText("Name to delete or select row");
+        deleteName.setMinWidth(175);
         deleteName.setMaxWidth(nameCol.getPrefWidth());
 
         final Button deleteButton = new Button("Delete");

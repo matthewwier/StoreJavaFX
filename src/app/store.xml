@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE store [
+        <!ELEMENT store (owner, items)>
+        <!ELEMENT owner (firstname, lastname,occupation)>
+        <!ELEMENT firstname (#PCDATA)>
+        <!ELEMENT lastname (#PCDATA)>
+        <!ELEMENT occupation (#PCDATA)>
+        <!ELEMENT items (item*)>
+        <!ELEMENT item (name,amount,description)>
+        <!ELEMENT name (#PCDATA)>
+        <!ELEMENT amount (#PCDATA)>
+        <!ELEMENT description (#PCDATA)>
+        <!ATTLIST owner age CDATA #REQUIRED>
+        ]>
 <store>
+    <owner age="25">
+        <firstname>Jan</firstname>
+        <lastname>Kowalski</lastname>
+        <occupation>Driver</occupation>
+    </owner>
     <items>
         <item>
             <name>Samochód</name>
