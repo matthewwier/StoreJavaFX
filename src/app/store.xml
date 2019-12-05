@@ -25,12 +25,37 @@
         <employee>
             <firstname>Paweł</firstname>
             <lastname>Nowak</lastname>
-            <age>20</age>
+            <age>45</age>
         </employee>
         <employee>
             <firstname>Wojciech</firstname>
             <lastname>Wójcik</lastname>
-            <age>20</age>
+            <age>41</age>
+        </employee>
+        <employee>
+            <firstname>Adam</firstname>
+            <lastname>Zieliński</lastname>
+            <age>34</age>
+        </employee>
+        <employee>
+            <firstname>Mariusz</firstname>
+            <lastname>Wójcik</lastname>
+            <age>28</age>
+        </employee>
+        <employee>
+            <firstname>Daniel</firstname>
+            <lastname>Miller</lastname>
+            <age>29</age>
+        </employee>
+        <employee>
+            <firstname>Karol</firstname>
+            <lastname>Podlaski</lastname>
+            <age>44</age>
+        </employee>
+        <employee>
+            <firstname>Andrzej</firstname>
+            <lastname>Michalski</lastname>
+            <age>29</age>
         </employee>
     </employees>
     <items>

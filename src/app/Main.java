@@ -1,6 +1,8 @@
 package app;
 
-import item.Item;
+import classes.Employee;
+import classes.Item;
+import classes.Owner;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,15 +23,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import users.User;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.ArrayList;
@@ -38,7 +34,7 @@ import java.util.List;
 
 import static loginForm.LoginForm.LoginForm;
 import static userForm.UserForm.UserForm;
-import static xmloperations.XMLOperations.addDataFromXMLFile;
+import static xmloperations.XMLOperations.addItemsDataFromXMLFile;
 
 public class Main extends Application {
 
@@ -49,6 +45,10 @@ public class Main extends Application {
     private List<User> userList;
     private final ObservableList<Item> data =
             FXCollections.observableArrayList();
+    private final ObservableList<Employee> employees =
+            FXCollections.observableArrayList();
+    private final Owner owner = null;
+
     private HBox hb;
     private TableView<Item> table;
     private File xmlFile;
@@ -169,7 +169,7 @@ public class Main extends Application {
                         System.out.println(content.toString());
                         textAreaXML.setText(content.toString());
                         // parse XML
-                        addDataFromXMLFile(xmlFile, data);
+                        addItemsDataFromXMLFile(xmlFile, data);
                     } catch (IOException | ParserConfigurationException | SAXException ex) {
                         ex.printStackTrace();
                     }
