@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE store [
-        <!ELEMENT store (owner, items)>
+        <!ELEMENT store (owner, employees, items)>
         <!ELEMENT owner (firstname, lastname,occupation)>
         <!ELEMENT firstname (#PCDATA)>
         <!ELEMENT lastname (#PCDATA)>
         <!ELEMENT occupation (#PCDATA)>
+        <!ELEMENT employees (employee*)>
+        <!ELEMENT employee (firstname,lastname,age)>
         <!ELEMENT items (item*)>
         <!ELEMENT item (name,amount,description)>
         <!ELEMENT name (#PCDATA)>
         <!ELEMENT amount (#PCDATA)>
+        <!ELEMENT age (#PCDATA)>
         <!ELEMENT description (#PCDATA)>
         <!ATTLIST owner age CDATA #REQUIRED>
         ]>
@@ -18,6 +21,18 @@
         <lastname>Kowalski</lastname>
         <occupation>Driver</occupation>
     </owner>
+    <employees>
+        <employee>
+            <firstname>Paweł</firstname>
+            <lastname>Nowak</lastname>
+            <age>20</age>
+        </employee>
+        <employee>
+            <firstname>Wojciech</firstname>
+            <lastname>Wójcik</lastname>
+            <age>20</age>
+        </employee>
+    </employees>
     <items>
         <item>
             <name>Samochód</name>
