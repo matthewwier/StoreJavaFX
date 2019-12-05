@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static creators.SceneCreator.createStoreScene;
 import static loginForm.LoginForm.LoginForm;
 import static userForm.UserForm.UserForm;
 import static xmloperations.XMLOperations.addItemsDataFromXMLFile;
@@ -187,113 +188,11 @@ public class Main extends Application {
         Button back = new Button();
         back.setText("To Store");
         back.setOnAction(e -> {
-            actualStage.setScene(getStoreScene(actualStage));
+            actualStage.setScene(createStoreScene(actualStage, userScene, data));
         });
 
 
         userPane.add(back, 3, 2);
-
-    }
-
-    private Scene getStoreScene(Stage actualStage) {
-        Scene storeScene = new Scene(new Group(), 800, 400);
-        table = new TableView<Item>();
-        table.setMaxHeight(250);
-        hb = new HBox();
-        HBox del = new HBox();
-
-
-        Label label = new Label("Store items:");
-        label.setFont(new Font("Arial", 20));
-
-        table.setEditable(true);
-
-        TableColumn nameCol = new TableColumn("Name");
-        nameCol.setMinWidth(260);
-        nameCol.setCellValueFactory(
-                new PropertyValueFactory<Item, String>("name"));
-
-        TableColumn amountCol = new TableColumn("Amount");
-        amountCol.setMinWidth(260);
-        amountCol.setCellValueFactory(
-                new PropertyValueFactory<Item, String>("amount"));
-
-        TableColumn descCol = new TableColumn("Description");
-        descCol.setMinWidth(260);
-        descCol.setCellValueFactory(
-                new PropertyValueFactory<Item, String>("description"));
-
-        table.setItems(data);
-        table.getColumns().addAll(nameCol, amountCol, descCol);
-
-        final TextField nameField = new TextField();
-        nameField.setPromptText("Name");
-        nameField.setMaxWidth(nameCol.getPrefWidth());
-        final TextField amountField = new TextField();
-        amountField.setMaxWidth(amountCol.getPrefWidth());
-        amountField.setPromptText("Amount");
-        final TextField descField = new TextField();
-        descField.setMaxWidth(descCol.getPrefWidth());
-        descField.setPromptText("Description");
-
-        final Button addButton = new Button("Add");
-        addButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                data.add(new Item(
-                        nameField.getText(),
-                        amountField.getText(),
-                        descField.getText()));
-                nameField.clear();
-                amountField.clear();
-                descField.clear();
-            }
-        });
-
-        final TextField deleteName = new TextField();
-        deleteName.setPromptText("Name to delete or select row");
-        deleteName.setMinWidth(175);
-        deleteName.setMaxWidth(nameCol.getPrefWidth());
-
-        final Button deleteButton = new Button("Delete");
-        deleteButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                Item item = table.getSelectionModel().getSelectedItem();
-                System.out.println(item.getName());
-                String nameToDelete = deleteName.getText();
-                Iterator<Item> it = data.iterator();
-                while (it.hasNext()) {
-                    Item next = it.next();
-                    if (next.getName().equals(item.getName())) {
-                        System.out.println("remove" + next.getName());
-                        it.remove();
-                    }
-                }
-                deleteName.clear();
-            }
-        });
-
-        final Button backToUserButton = new Button("Back to XML file");
-        backToUserButton.setOnAction(e -> {
-                    actualStage.setScene(userScene);
-                }
-        );
-
-        hb.getChildren().addAll(nameField, amountField, descField, addButton);
-        hb.setSpacing(3);
-        del.getChildren().addAll(deleteName, deleteButton);
-        del.setSpacing(3);
-
-        final VBox vbox = new VBox();
-        vbox.setSpacing(5);
-        vbox.setPadding(new Insets(10, 0, 0, 10));
-        vbox.getChildren().add(backToUserButton);
-        vbox.getChildren().addAll(label, table, hb, del);
-
-        ((Group) storeScene.getRoot()).getChildren().addAll(vbox);
-
-        return storeScene;
 
     }
 
