@@ -1,10 +1,13 @@
 package creators;
 
+import classes.Employee;
 import classes.Item;
+import classes.Owner;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -114,6 +117,114 @@ public class SceneCreator {
         vbox.setPadding(new Insets(10, 0, 0, 10));
         vbox.getChildren().add(backToUserButton);
         vbox.getChildren().addAll(label, table, hb, del);
+
+        ((Group) storeScene.getRoot()).getChildren().addAll(vbox);
+
+        return storeScene;
+
+    }
+
+    public static Scene createDetailsScene(Stage actualStage, Scene userScene, ObservableList<Employee> data, Owner owner) {
+        Scene storeScene = new Scene(new Group(), 800, 400);
+        TableView<Employee> table = new TableView<Employee>();
+        table.setMaxHeight(240);
+        HBox hb = new HBox();
+        HBox del = new HBox();
+
+
+        Label ownerLabel = new Label("Owner:" + owner.getFirstname()+ "" + owner.getLastname());
+        ownerLabel.setFont(new Font("Arial", 20));
+        Label label = new Label("Store employees:");
+        label.setFont(new Font("Arial", 20));
+
+        table.setEditable(true);
+
+        TableColumn firstNameCol = new TableColumn("Firstname");
+        firstNameCol.setMinWidth(260);
+        firstNameCol.setCellValueFactory(
+                new PropertyValueFactory<Employee, String>("firstname"));
+
+        TableColumn lastnameCol = new TableColumn("Lastname");
+        lastnameCol.setMinWidth(260);
+        lastnameCol.setCellValueFactory(
+                new PropertyValueFactory<Employee, String>("lastname"));
+
+        TableColumn ageCol = new TableColumn("Age");
+        ageCol.setMinWidth(260);
+        ageCol.setCellValueFactory(
+                new PropertyValueFactory<Employee, String>("age"));
+
+        table.setItems(data);
+        table.getColumns().addAll(firstNameCol, lastnameCol, ageCol);
+
+        final TextField firstnameField = new TextField();
+        firstnameField.setPromptText("Firstname");
+        firstnameField.setMaxWidth(firstNameCol.getPrefWidth());
+        final TextField lastnameField = new TextField();
+        lastnameField.setMaxWidth(lastnameCol.getPrefWidth());
+        lastnameField.setPromptText("Lastname");
+        final TextField ageField = new TextField();
+        ageField.setMaxWidth(ageCol.getPrefWidth());
+        ageField.setPromptText("Age");
+
+        final Button addButton = new Button("Add");
+        addButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                data.add(new Employee(
+                        firstnameField.getText(),
+                        lastnameField.getText(),
+                        ageField.getText()));
+                firstnameField.clear();
+                lastnameField.clear();
+                ageField.clear();
+            }
+        });
+
+        final TextField deleteName = new TextField();
+        deleteName.setPromptText("Name to delete or select row");
+        deleteName.setMinWidth(175);
+        deleteName.setMaxWidth(firstNameCol.getPrefWidth());
+
+        final Button deleteButton = new Button("Delete");
+        deleteButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                Employee employee = table.getSelectionModel().getSelectedItem();
+                System.out.println(employee.getFirstname());
+                String nameToDelete = deleteName.getText();
+                Iterator<Employee> it = data.iterator();
+                while (it.hasNext()) {
+                    Employee next = it.next();
+                    if (next.getFirstname().equals(employee.getFirstname())) {
+                        System.out.println("remove" + next.getFirstname());
+                        it.remove();
+                    }
+                }
+                deleteName.clear();
+            }
+        });
+
+        final Button backToUserButton = new Button("Back to XML file");
+        backToUserButton.setOnAction(e -> {
+                    actualStage.setScene(userScene);
+                }
+        );
+
+        hb.getChildren().addAll(firstnameField, lastnameField, ageField, addButton);
+        hb.setSpacing(3);
+        del.getChildren().addAll(deleteName, deleteButton);
+        del.setSpacing(3);
+
+        final VBox vbox = new VBox();
+        vbox.setSpacing(5);
+        vbox.setPadding(new Insets(10, 0, 0, 10));
+        vbox.getChildren().add(backToUserButton);
+
+        HBox ownerHBox = new HBox();
+        ownerHBox.setAlignment(Pos.TOP_CENTER);
+        ownerHBox.getChildren().add(ownerLabel);
+        vbox.getChildren().addAll(ownerHBox, label, table, hb, del);
 
         ((Group) storeScene.getRoot()).getChildren().addAll(vbox);
 

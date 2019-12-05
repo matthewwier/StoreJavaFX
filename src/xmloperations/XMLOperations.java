@@ -2,6 +2,7 @@ package xmloperations;
 
 import classes.Employee;
 import classes.Item;
+import classes.Owner;
 import javafx.collections.ObservableList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -42,7 +43,7 @@ public class XMLOperations {
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document document = dBuilder.parse(file);
         document.getDocumentElement().normalize();
-        NodeList nodeList = document.getElementsByTagName("item");
+        NodeList nodeList = document.getElementsByTagName("employee");
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -56,7 +57,7 @@ public class XMLOperations {
         }
     }
 
-    public static void addOwnerFromXMLFile(File file) throws ParserConfigurationException, IOException, SAXException {
+    public static Owner addOwnerFromXMLFile(File file) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document document = dBuilder.parse(file);
@@ -71,8 +72,9 @@ public class XMLOperations {
                 String lastname = xmlElement.getElementsByTagName("lastname").item(0).getTextContent();
                 String occupation = xmlElement.getElementsByTagName("occupation").item(0).getTextContent();
                 String age = xmlElement.getAttribute("age");
-
+                return new Owner(firstname, lastname, occupation, age);
             }
         }
+        return null;
     }
 }

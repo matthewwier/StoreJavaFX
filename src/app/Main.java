@@ -6,18 +6,14 @@ import classes.Owner;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -29,13 +25,12 @@ import users.User;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import static creators.SceneCreator.createStoreScene;
+import static creators.SceneCreator.*;
 import static loginForm.LoginForm.LoginForm;
 import static userForm.UserForm.UserForm;
-import static xmloperations.XMLOperations.addItemsDataFromXMLFile;
+import static xmloperations.XMLOperations.*;
 
 public class Main extends Application {
 
@@ -48,7 +43,7 @@ public class Main extends Application {
             FXCollections.observableArrayList();
     private final ObservableList<Employee> employees =
             FXCollections.observableArrayList();
-    private final Owner owner = null;
+    private Owner owner = null;
 
     private HBox hb;
     private TableView<Item> table;
@@ -170,7 +165,11 @@ public class Main extends Application {
                         System.out.println(content.toString());
                         textAreaXML.setText(content.toString());
                         // parse XML
+
                         addItemsDataFromXMLFile(xmlFile, data);
+                        addEmployeesDataFromXMLFile(xmlFile, employees);
+                        owner = addOwnerFromXMLFile(xmlFile);
+
                     } catch (IOException | ParserConfigurationException | SAXException ex) {
                         ex.printStackTrace();
                     }
@@ -179,9 +178,23 @@ public class Main extends Application {
                 });
         openButton.setMinWidth(150);
         VBox vbox = new VBox();
+        vbox.setSpacing(10);
         Button closeAppButton = new Button("Close app");
         closeAppButton.setMinWidth(150);
-        vbox.getChildren().addAll(openButton, closeAppButton);
+        closeAppButton.setOnAction(e -> {
+                    Stage stage = (Stage) closeAppButton.getScene().getWindow();
+                    stage.close();
+                }
+        );
+
+        Button detailsButton = new Button("See store details");
+        detailsButton.setMinWidth(150);
+        detailsButton.setOnAction(e -> {
+                    actualStage.setScene(createDetailsScene(actualStage, userScene, employees, owner));
+                }
+        );
+
+        vbox.getChildren().addAll(openButton, detailsButton, closeAppButton);
 
         userPane.add(vbox, 0, 2);
         userPane.add(textAreaXML, 1, 2);
