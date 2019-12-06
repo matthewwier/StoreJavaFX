@@ -36,6 +36,7 @@ public class Main extends Application {
 
     private Stage actualStage;
     private Scene loginScene;
+    private Scene registerScene;
     private Scene userScene;
 
     private List<User> userList;
@@ -64,6 +65,10 @@ public class Main extends Application {
         userList.add(new User("danny", "danny", "danny@gmail.com"));
     }
 
+    public void addUser(String username, String password, String email) {
+        userList.add(new User(username, password, email));
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -87,21 +92,29 @@ public class Main extends Application {
 
     private void addLoginFormControls(GridPane gridPane, Stage actualStage) throws IOException, SAXException, ParserConfigurationException {
 
-        Label headerLabel = new Label("ZALOGUJ SIĘ");
+        Label headerLabel = new Label("SIGN IN");
         headerLabel.setFont(Font.font("Helvetica", FontWeight.BOLD, 24));
         gridPane.add(headerLabel, 0, 0, 2, 1);
         GridPane.setHalignment(headerLabel, HPos.CENTER);
         GridPane.setMargin(headerLabel, new Insets(20, 0, 20, 0));
 
 
-        Label nameLabel = new Label("Username:");
-        nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-        gridPane.add(nameLabel, 0, 1);
+        Label usernameLabel = new Label("Username:");
+        usernameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        gridPane.add(usernameLabel, 0, 1);
 
 
-        TextField nameField = new TextField();
-        nameField.setPrefHeight(40);
-        gridPane.add(nameField, 1, 1);
+        TextField usernameField = new TextField();
+        usernameField.setPrefHeight(40);
+        gridPane.add(usernameField, 1, 1);
+
+//        Label emailLabel = new Label("Email:");
+//        emailLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+//        gridPane.add(emailLabel, 0, 2);
+//
+//        TextField emailField = new TextField();
+//        emailField.setPrefHeight(40);
+//        gridPane.add(emailField, 1, 2);
 
 
         Label passwordLabel = new Label("Password : ");
@@ -112,19 +125,25 @@ public class Main extends Application {
         passwordField.setPrefHeight(40);
         gridPane.add(passwordField, 1, 2);
 
-        Button submitButton = new Button("Log in");
-        submitButton.setPrefHeight(40);
-        submitButton.setDefaultButton(true);
-        submitButton.setPrefWidth(100);
+        Button loginButton = new Button("Log in");
+        loginButton.setPrefHeight(40);
+        loginButton.setDefaultButton(true);
+        loginButton.setPrefWidth(100);
+
+        Button registerButton = new Button("Register");
+        registerButton.setPrefHeight(40);
+        registerButton.setDefaultButton(true);
+        registerButton.setPrefWidth(100);
+
 
         // LOGIN - przejście do UserForm as scene
         GridPane userPane = UserForm();
         addUserFormControls(userPane, actualStage);
 
         userScene = new Scene(userPane, 800, 400);
-        submitButton.setOnAction(e ->
+        loginButton.setOnAction(e ->
         {
-            String typedLogin = nameField.getText();
+            String typedLogin = usernameField.getText();
             String typedPassword = passwordField.getText();
             for (User user : userList) {
                 if (user.getLogin().equals(typedLogin)) {
@@ -134,9 +153,96 @@ public class Main extends Application {
                 }
             }
         });
-        gridPane.add(submitButton, 0, 3, 2, 1);
-        GridPane.setHalignment(submitButton, HPos.CENTER);
-        GridPane.setMargin(submitButton, new Insets(20, 0, 20, 0));
+        gridPane.add(loginButton, 0, 4, 2, 1);
+        GridPane.setHalignment(loginButton, HPos.CENTER);
+        GridPane.setMargin(loginButton, new Insets(20, 100, 20, 0));
+
+        gridPane.add(registerButton, 0, 4, 2, 1);
+        GridPane.setHalignment(registerButton, HPos.RIGHT);
+        GridPane.setMargin(registerButton, new Insets(20, 250, 20, 0));
+
+        // przejsce do rejestracji
+        GridPane registerPane = UserForm();
+        addRegisterFormControls(registerPane, actualStage);
+
+        registerScene = new Scene(registerPane, 800, 400);
+        addRegisterFormControls(registerPane, actualStage);
+        registerButton.setOnAction(e ->
+        {
+            actualStage.setScene(registerScene);
+        });
+    }
+
+
+    private void addRegisterFormControls(GridPane gridPane, Stage actualStage) {
+        Label headerLabel = new Label("SIGN UP");
+        headerLabel.setFont(Font.font("Helvetica", FontWeight.BOLD, 24));
+        gridPane.add(headerLabel, 0, 0, 2, 1);
+        GridPane.setHalignment(headerLabel, HPos.CENTER);
+        GridPane.setMargin(headerLabel, new Insets(20, 0, 20, 0));
+
+
+        Label usernameLabel = new Label("Username:");
+        usernameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        gridPane.add(usernameLabel, 0, 1);
+
+
+        TextField usernameField = new TextField();
+        usernameField.setPrefHeight(40);
+        gridPane.add(usernameField, 1, 1);
+
+        Label emailLabel = new Label("Email:");
+        emailLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        gridPane.add(emailLabel, 0, 2);
+
+        TextField emailField = new TextField();
+        emailField.setPrefHeight(40);
+        gridPane.add(emailField, 1, 2);
+
+
+        Label passwordLabel = new Label("Password:");
+        passwordLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        gridPane.add(passwordLabel, 0, 3);
+
+        PasswordField passwordField = new PasswordField();
+        passwordField.setPrefHeight(40);
+        gridPane.add(passwordField, 1, 3);
+
+        Button registerButton = new Button("Register");
+        registerButton.setPrefHeight(40);
+        registerButton.setDefaultButton(true);
+        registerButton.setPrefWidth(100);
+
+
+        // LOGIN - przejście do UserForm as scene
+        GridPane userPane = UserForm();
+        addUserFormControls(userPane, actualStage);
+
+        userScene = new Scene(userPane, 800, 400);
+        registerButton.setOnAction(e ->
+        {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Are you sure to register as " + usernameField.getText() + "?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+            alert.showAndWait();
+
+            if (alert.getResult() == ButtonType.YES) {
+
+                addUser(usernameField.getText(), passwordField.getText(), emailField.getText());
+
+                Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                alert2.setContentText("Sign in using your email and password");
+                alert2.setTitle("Registration");
+                alert2.setHeaderText("User registered successfully!");
+                alert2.show();
+                actualStage.setScene(loginScene);
+            }
+
+        });
+        gridPane.add(registerButton, 0, 4, 2, 1);
+        GridPane.setHalignment(registerButton, HPos.CENTER);
+        GridPane.setMargin(registerButton, new Insets(20, 0, 20, 0));
+
+        // przejsce do rejestracji
     }
 
     private void addUserFormControls(GridPane userPane, Stage actualStage) {
