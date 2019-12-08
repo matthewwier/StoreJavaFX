@@ -16,13 +16,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.xml.sax.SAXException;
+import xmloperations.XMLOperations;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 
 public class SceneCreator {
 
 
-    public static Scene createStoreScene(Stage actualStage, Scene userScene, ObservableList<Item> data) {
+    public static Scene createStoreScene(Stage actualStage, Scene userScene, ObservableList<Item> data, File xmlFile) {
         Scene storeScene = new Scene(new Group(), 800, 400);
         TableView<Item> table = new TableView<Item>();
         table.setMaxHeight(250);
@@ -67,10 +73,18 @@ public class SceneCreator {
         addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                data.add(new Item(
+                Item item = new Item(
                         nameField.getText(),
                         amountField.getText(),
-                        descField.getText()));
+                        descField.getText());
+                data.add(item);
+
+                try {
+                    XMLOperations.addItemToXMLFile(item, xmlFile);
+                } catch (ParserConfigurationException | IOException | SAXException | TransformerException ex) {
+                    ex.printStackTrace();
+                }
+
                 nameField.clear();
                 amountField.clear();
                 descField.clear();
@@ -87,14 +101,32 @@ public class SceneCreator {
             @Override
             public void handle(ActionEvent e) {
                 Item item = table.getSelectionModel().getSelectedItem();
-                System.out.println(item.getName());
+//                System.out.println(item.getName());
                 String nameToDelete = deleteName.getText();
                 Iterator<Item> it = data.iterator();
                 while (it.hasNext()) {
                     Item next = it.next();
-                    if (next.getName().equals(item.getName())) {
+                    if (next.getName().equals(nameToDelete)) {
                         System.out.println("remove" + next.getName());
                         it.remove();
+
+                        try {
+                            XMLOperations.removeItemFromXMLFile(next, xmlFile);
+                        } catch (ParserConfigurationException | SAXException | IOException | TransformerException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                    if(item!=null){
+                        if(next.getName().equals(item.getName())
+                                && next.getDescription().equals(item.getDescription()) && next.getAmount().equals(item.getAmount())){
+                            System.out.println("remove" + next.getName());
+                            try {
+                                XMLOperations.removeItemFromXMLFile(next, xmlFile);
+                            } catch (ParserConfigurationException | IOException | TransformerException | SAXException ex) {
+                                ex.printStackTrace();
+                            }
+                            it.remove();
+                        }
                     }
                 }
                 deleteName.clear();
@@ -124,7 +156,7 @@ public class SceneCreator {
 
     }
 
-    public static Scene createDetailsScene(Stage actualStage, Scene userScene, ObservableList<Employee> data, Owner owner) {
+    public static Scene createDetailsScene(Stage actualStage, Scene userScene, ObservableList<Employee> data, Owner owner, File xmlFile) {
         Scene storeScene = new Scene(new Group(), 800, 400);
         TableView<Employee> table = new TableView<Employee>();
         table.setMaxHeight(240);
@@ -132,7 +164,7 @@ public class SceneCreator {
         HBox del = new HBox();
 
 
-        Label ownerLabel = new Label("Owner:" + owner.getFirstname()+ "" + owner.getLastname());
+        Label ownerLabel = new Label("Owner:" + owner.getFirstname() + "" + owner.getLastname());
         ownerLabel.setFont(new Font("Arial", 20));
         Label label = new Label("Store employees:");
         label.setFont(new Font("Arial", 20));
@@ -191,14 +223,31 @@ public class SceneCreator {
             @Override
             public void handle(ActionEvent e) {
                 Employee employee = table.getSelectionModel().getSelectedItem();
-                System.out.println(employee.getFirstname());
+
                 String nameToDelete = deleteName.getText();
                 Iterator<Employee> it = data.iterator();
                 while (it.hasNext()) {
                     Employee next = it.next();
-                    if (next.getFirstname().equals(employee.getFirstname())) {
+                    if (next.getFirstname().equals(nameToDelete)) {
                         System.out.println("remove" + next.getFirstname());
+                        try {
+                            XMLOperations.removeEmployeeFromXMLFile(next, xmlFile);
+                        } catch (ParserConfigurationException | IOException | TransformerException | SAXException ex) {
+                            ex.printStackTrace();
+                        }
                         it.remove();
+                    }
+                    if(employee!=null){
+                        if(next.getFirstname().equals(employee.getFirstname())
+                                && next.getLastname().equals(employee.getLastname()) && next.getAge().equals(employee.getAge())){
+                            System.out.println("remove" + next.getFirstname());
+                            try {
+                                XMLOperations.removeEmployeeFromXMLFile(next, xmlFile);
+                            } catch (ParserConfigurationException | IOException | TransformerException | SAXException ex) {
+                                ex.printStackTrace();
+                            }
+                            it.remove();
+                        }
                     }
                 }
                 deleteName.clear();

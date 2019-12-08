@@ -67,12 +67,37 @@
         <item>
             <name>Opona</name>
             <amount>200</amount>
-            <description>Z bieżnikiem</description>
+            <description>Czarna</description>
         </item>
         <item>
             <name>Lusterko</name>
             <amount>400</amount>
             <description>Kwadratowe</description>
+        </item>
+        <item>
+            <name>Laptop</name>
+            <amount>24</amount>
+            <description>Lenovo</description>
+        </item>
+        <item>
+            <name>Wiedźmin</name>
+            <amount>1500</amount>
+            <description>Book</description>
+        </item>
+        <item>
+            <name>Pudełko</name>
+            <amount>6500</amount>
+            <description>Kartonowe</description>
+        </item>
+        <item>
+            <name>Suszarka</name>
+            <amount>15</amount>
+            <description>Biała</description>
+        </item>
+        <item>
+            <name>Wiaderko</name>
+            <amount>145</amount>
+            <description>Małe, okrągłe</description>
         </item>
     </items>
 </store>

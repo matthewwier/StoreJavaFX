@@ -23,6 +23,7 @@ import org.xml.sax.SAXException;
 import users.User;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,11 +53,11 @@ public class Main extends Application {
 
 
     public void fillArrayList() {
-        data.addAll(new Item("Stół", "12", "Brązowy"),
-                new Item("Sofa", "15", "Żółta"),
-                new Item("Okno", "20", "Duże"),
-                new Item("Parapet", "11", "Kolorowy"),
-                new Item("Krzesło", "4", "Czarne"));
+//        data.addAll(new Item("Stół", "12", "Brązowy"),
+//                new Item("Sofa", "15", "Żółta"),
+//                new Item("Okno", "20", "Duże"),
+//                new Item("Parapet", "11", "Kolorowy"),
+//                new Item("Krzesło", "4", "Czarne"));
     }
 
 
@@ -246,7 +247,7 @@ public class Main extends Application {
     }
 
     private void addUserFormControls(GridPane userPane, Stage actualStage) {
-        Label infoLabel = new Label("Content of your XML file:");
+        Label infoLabel = new Label("List of elements of your XML file:");
         infoLabel.setFont(Font.font("Helvetica", FontWeight.BOLD, 20));
         userPane.add(infoLabel, 1, 0, 2, 1);
         GridPane.setHalignment(infoLabel, HPos.CENTER);
@@ -261,22 +262,14 @@ public class Main extends Application {
                 e -> {
                     xmlFile = fileChooser.showOpenDialog(actualStage);
                     try {
-                        BufferedReader bufferedReader = new BufferedReader(new FileReader(xmlFile));
-                        String line;
-                        StringBuilder content = new StringBuilder();
-                        while ((line = bufferedReader.readLine()) != null) {
-                            content.append(line).append("\n");
+                        textAreaXML.setText(readXMLFile(xmlFile));
+                        if (employees.size() == 0) {
+                            addItemsDataFromXMLFile(xmlFile, data);
+                            addEmployeesDataFromXMLFile(xmlFile, employees);
+                            owner = addOwnerFromXMLFile(xmlFile);
                         }
-                        //String filteredContent = content.toString().replaceAll(" ", "");
-                        System.out.println(content.toString());
-                        textAreaXML.setText(content.toString());
-                        // parse XML
 
-                        addItemsDataFromXMLFile(xmlFile, data);
-                        addEmployeesDataFromXMLFile(xmlFile, employees);
-                        owner = addOwnerFromXMLFile(xmlFile);
-
-                    } catch (IOException | ParserConfigurationException | SAXException ex) {
+                    } catch (IOException | ParserConfigurationException | SAXException | TransformerException ex) {
                         ex.printStackTrace();
                     }
 
@@ -296,7 +289,7 @@ public class Main extends Application {
         Button detailsButton = new Button("See store details");
         detailsButton.setMinWidth(150);
         detailsButton.setOnAction(e -> {
-                    actualStage.setScene(createDetailsScene(actualStage, userScene, employees, owner));
+                    actualStage.setScene(createDetailsScene(actualStage, userScene, employees, owner, xmlFile));
                 }
         );
 
@@ -304,14 +297,14 @@ public class Main extends Application {
 
         userPane.add(vbox, 0, 2);
         userPane.add(textAreaXML, 1, 2);
-        Button back = new Button();
-        back.setText("To Store");
-        back.setOnAction(e -> {
-            actualStage.setScene(createStoreScene(actualStage, userScene, data));
+        Button toStore = new Button();
+        toStore.setText("To Store");
+        toStore.setOnAction(e -> {
+            actualStage.setScene(createStoreScene(actualStage, userScene, data, xmlFile));
         });
 
 
-        userPane.add(back, 3, 2);
+        userPane.add(toStore, 3, 2);
 
     }
 
