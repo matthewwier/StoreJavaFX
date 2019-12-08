@@ -28,7 +28,7 @@ import java.util.Iterator;
 public class SceneCreator {
 
 
-    public static Scene createStoreScene(Stage actualStage, Scene userScene, ObservableList<Item> data, File xmlFile) {
+    public static Scene createStoreScene(Stage actualStage, Scene userScene, ObservableList<Item> data, File xmlFile, TextArea textArea) {
         Scene storeScene = new Scene(new Group(), 800, 400);
         TableView<Item> table = new TableView<Item>();
         table.setMaxHeight(250);
@@ -116,9 +116,9 @@ public class SceneCreator {
                             ex.printStackTrace();
                         }
                     }
-                    if(item!=null){
-                        if(next.getName().equals(item.getName())
-                                && next.getDescription().equals(item.getDescription()) && next.getAmount().equals(item.getAmount())){
+                    if (item != null) {
+                        if (next.getName().equals(item.getName())
+                                && next.getDescription().equals(item.getDescription()) && next.getAmount().equals(item.getAmount())) {
                             System.out.println("remove" + next.getName());
                             try {
                                 XMLOperations.removeItemFromXMLFile(next, xmlFile);
@@ -135,6 +135,11 @@ public class SceneCreator {
 
         final Button backToUserButton = new Button("Back to XML file");
         backToUserButton.setOnAction(e -> {
+                    try {
+                        textArea.setText(XMLOperations.readXMLFile(xmlFile));
+                    } catch (IOException | SAXException | ParserConfigurationException ex) {
+                        ex.printStackTrace();
+                    }
                     actualStage.setScene(userScene);
                 }
         );
@@ -156,7 +161,7 @@ public class SceneCreator {
 
     }
 
-    public static Scene createDetailsScene(Stage actualStage, Scene userScene, ObservableList<Employee> data, Owner owner, File xmlFile) {
+    public static Scene createDetailsScene(Stage actualStage, Scene userScene, ObservableList<Employee> data, Owner owner, File xmlFile, TextArea textArea) {
         Scene storeScene = new Scene(new Group(), 800, 400);
         TableView<Employee> table = new TableView<Employee>();
         table.setMaxHeight(240);
@@ -164,7 +169,7 @@ public class SceneCreator {
         HBox del = new HBox();
 
 
-        Label ownerLabel = new Label("Owner:" + owner.getFirstname() + "" + owner.getLastname());
+        Label ownerLabel = new Label("Owner:" + owner.getFirstname() + " " + owner.getLastname());
         ownerLabel.setFont(new Font("Arial", 20));
         Label label = new Label("Store employees:");
         label.setFont(new Font("Arial", 20));
@@ -203,10 +208,18 @@ public class SceneCreator {
         addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                data.add(new Employee(
+                Employee employee = new Employee(
                         firstnameField.getText(),
                         lastnameField.getText(),
-                        ageField.getText()));
+                        ageField.getText());
+                data.add(employee);
+
+                try {
+                    XMLOperations.addEmployeeToXMLFile(employee, xmlFile);
+                } catch (ParserConfigurationException | IOException | SAXException | TransformerException ex) {
+                    ex.printStackTrace();
+                }
+
                 firstnameField.clear();
                 lastnameField.clear();
                 ageField.clear();
@@ -237,9 +250,9 @@ public class SceneCreator {
                         }
                         it.remove();
                     }
-                    if(employee!=null){
-                        if(next.getFirstname().equals(employee.getFirstname())
-                                && next.getLastname().equals(employee.getLastname()) && next.getAge().equals(employee.getAge())){
+                    if (employee != null) {
+                        if (next.getFirstname().equals(employee.getFirstname())
+                                && next.getLastname().equals(employee.getLastname()) && next.getAge().equals(employee.getAge())) {
                             System.out.println("remove" + next.getFirstname());
                             try {
                                 XMLOperations.removeEmployeeFromXMLFile(next, xmlFile);
@@ -256,6 +269,12 @@ public class SceneCreator {
 
         final Button backToUserButton = new Button("Back to XML file");
         backToUserButton.setOnAction(e -> {
+                    // aktualizacja pliku
+                    try {
+                        textArea.setText(XMLOperations.readXMLFile(xmlFile));
+                    } catch (IOException | SAXException | ParserConfigurationException ex) {
+                        ex.printStackTrace();
+                    }
                     actualStage.setScene(userScene);
                 }
         );

@@ -76,7 +76,7 @@ public class Main extends Application {
         addUsers();
         fillArrayList();
         actualStage = primaryStage;
-        actualStage.setTitle("Aplikacja do zarządzania magazynem");
+        actualStage.setTitle("Store Management");
 
         GridPane gridPane = LoginForm();
         addLoginFormControls(gridPane, actualStage);
@@ -289,7 +289,7 @@ public class Main extends Application {
         Button detailsButton = new Button("See store details");
         detailsButton.setMinWidth(150);
         detailsButton.setOnAction(e -> {
-                    actualStage.setScene(createDetailsScene(actualStage, userScene, employees, owner, xmlFile));
+                    actualStage.setScene(createDetailsScene(actualStage, userScene, employees, owner, xmlFile, textAreaXML));
                 }
         );
 
@@ -300,7 +300,7 @@ public class Main extends Application {
         Button toStore = new Button();
         toStore.setText("To Store");
         toStore.setOnAction(e -> {
-            actualStage.setScene(createStoreScene(actualStage, userScene, data, xmlFile));
+            actualStage.setScene(createStoreScene(actualStage, userScene, data, xmlFile, textAreaXML));
         });
 
 
