@@ -3,7 +3,7 @@
 */out/*
 out/
 *.iml
-.gitignore
+*.gitignore
 openjfx-11.0.2_windows-x64_bin-sdk
 FactoryMethod.iml
 pom.xml
