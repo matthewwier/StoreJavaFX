@@ -12,8 +12,8 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
@@ -154,7 +154,7 @@ public class SceneCreator {
         vbox.setPadding(new Insets(10, 0, 0, 10));
         vbox.getChildren().add(backToUserButton);
         vbox.getChildren().addAll(label, table, hb, del);
-
+        vbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
         ((Group) storeScene.getRoot()).getChildren().addAll(vbox);
 
         return storeScene;
@@ -167,7 +167,6 @@ public class SceneCreator {
         table.setMaxHeight(240);
         HBox hb = new HBox();
         HBox del = new HBox();
-
 
         Label ownerLabel = new Label("Owner:" + owner.getFirstname() + " " + owner.getLastname());
         ownerLabel.setFont(new Font("Arial", 20));
