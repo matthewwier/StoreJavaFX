@@ -1,4 +1,4 @@
-package userForm;
+package forms;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;

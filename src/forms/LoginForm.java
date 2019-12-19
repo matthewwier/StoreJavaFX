@@ -1,4 +1,4 @@
-package loginForm;
+package forms;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;

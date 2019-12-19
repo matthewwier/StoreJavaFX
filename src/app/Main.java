@@ -20,7 +20,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
-import users.User;
+import classes.User;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -29,8 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static creators.SceneCreator.*;
-import static loginForm.LoginForm.LoginForm;
-import static userForm.UserForm.UserForm;
+import static forms.LoginForm.LoginForm;
+import static forms.UserForm.UserForm;
 import static xmloperations.XMLOperations.*;
 
 public class Main extends Application {

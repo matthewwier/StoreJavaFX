@@ -22,6 +22,8 @@ import java.io.StringWriter;
 
 public class XMLOperations {
 
+
+
     public static void addItemsDataFromXMLFile(File file, ObservableList<Item> items) throws ParserConfigurationException, IOException, SAXException, TransformerException {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
