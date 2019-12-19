@@ -3,6 +3,9 @@ package app;
 import classes.Employee;
 import classes.Item;
 import classes.Owner;
+import creators.AbstractSceneCreator;
+import creators.DetailsSceneCreator;
+import creators.StoreSceneCreator;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,12 +31,12 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static creators.SceneCreator.*;
 import static forms.LoginForm.LoginForm;
 import static forms.UserForm.UserForm;
 import static xmloperations.XMLOperations.*;
 
 public class Main extends Application {
+    private AbstractSceneCreator sceneCreator;
 
     private Stage actualStage;
     private Scene loginScene;
@@ -289,7 +292,8 @@ public class Main extends Application {
         Button detailsButton = new Button("See store details");
         detailsButton.setMinWidth(150);
         detailsButton.setOnAction(e -> {
-                    actualStage.setScene(createDetailsScene(actualStage, userScene, employees, owner, xmlFile, textAreaXML));
+                    sceneCreator = new DetailsSceneCreator();
+                    actualStage.setScene(sceneCreator.create(actualStage, userScene, employees, owner, xmlFile, textAreaXML));
                 }
         );
 
@@ -300,7 +304,8 @@ public class Main extends Application {
         Button toStore = new Button();
         toStore.setText("To Store");
         toStore.setOnAction(e -> {
-            actualStage.setScene(createStoreScene(actualStage, userScene, data, xmlFile, textAreaXML));
+            sceneCreator = new StoreSceneCreator();
+            actualStage.setScene(sceneCreator.create(actualStage, userScene, data, owner, xmlFile, textAreaXML));
         });
 
 
