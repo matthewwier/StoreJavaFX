@@ -112,15 +112,6 @@ public class Main extends Application {
         usernameField.setPrefHeight(40);
         gridPane.add(usernameField, 1, 1);
 
-//        Label emailLabel = new Label("Email:");
-//        emailLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-//        gridPane.add(emailLabel, 0, 2);
-//
-//        TextField emailField = new TextField();
-//        emailField.setPrefHeight(40);
-//        gridPane.add(emailField, 1, 2);
-
-
         Label passwordLabel = new Label("Password : ");
         passwordLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
         gridPane.add(passwordLabel, 0, 2);
