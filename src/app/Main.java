@@ -6,6 +6,9 @@ import classes.Owner;
 import creators.AbstractSceneCreator;
 import creators.DetailsSceneCreator;
 import creators.StoreSceneCreator;
+import data.Employees;
+import data.Items;
+import data.Users;
 import decorators.LoginFormDecorator;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -30,9 +33,6 @@ import xmlworker.XMLWorker;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-
 import static forms.LoginForm.LoginForm;
 import static forms.UserForm.UserForm;
 import static xmloperations.XMLOperations.*;
@@ -45,33 +45,25 @@ public class Main extends Application {
     private Scene registerScene;
     private Scene userScene;
 
-
-    private List<User> userList;
-    private final ObservableList<Item> data =
-            FXCollections.observableArrayList();
-    private final ObservableList<Employee> employees =
-            FXCollections.observableArrayList();
     private Owner owner = null;
     private File xmlFile;
 
 
-
     public void fillArrayList() {
-//        data.addAll(new Item("Stół", "12", "Brązowy"),
-//                new Item("Sofa", "15", "Żółta"),
-//                new Item("Okno", "20", "Duże"),
-//                new Item("Parapet", "11", "Kolorowy"),
-//                new Item("Krzesło", "4", "Czarne"));
+        Items.data.addAll(new Item("Stół", "12", "Brązowy"),
+                new Item("Sofa", "15", "Żółta"),
+                new Item("Okno", "20", "Duże"),
+                new Item("Parapet", "11", "Kolorowy"),
+                new Item("Krzesło", "4", "Czarne"));
     }
 
 
     public void addUsers() {
-        userList = new ArrayList<>();
-        userList.add(new User("danny", "danny", "danny@gmail.com"));
+        Users.userList.add(new User("danny", "danny", "danny@gmail.com"));
     }
 
     public void addUser(String username, String password, String email) {
-        userList.add(new User(username, password, email));
+        Users.userList.add(new User(username, password, email));
     }
 
     @Override
@@ -141,7 +133,7 @@ public class Main extends Application {
         {
             String typedLogin = usernameField.getText();
             String typedPassword = passwordField.getText();
-            for (User user : userList) {
+            for (User user : Users.userList) {
                 if (user.getLogin().equals(typedLogin)) {
                     if (user.getPassword().equals(typedPassword)) {
                         actualStage.setScene(userScene);
@@ -258,9 +250,9 @@ public class Main extends Application {
                     xmlFile = fileChooser.showOpenDialog(actualStage);
                     try {
                         textAreaXML.setText(readXMLFile(xmlFile));
-                        if (employees.size() == 0) {
-                            addItemsDataFromXMLFile(xmlFile, data);
-                            addEmployeesDataFromXMLFile(xmlFile, employees);
+                        if (Employees.employees.size() == 0) {
+                            addItemsDataFromXMLFile(xmlFile, Items.data);
+                            addEmployeesDataFromXMLFile(xmlFile, Employees.employees);
                             owner = addOwnerFromXMLFile(xmlFile);
                         }
 
@@ -285,7 +277,7 @@ public class Main extends Application {
         detailsButton.setMinWidth(150);
         detailsButton.setOnAction(e -> {
                     sceneCreator = new DetailsSceneCreator();
-                    actualStage.setScene(sceneCreator.create(actualStage, userScene, employees, owner, xmlFile, textAreaXML));
+                    actualStage.setScene(sceneCreator.create(actualStage, userScene, Employees.employees, owner, xmlFile, textAreaXML));
                 }
         );
 
@@ -297,7 +289,7 @@ public class Main extends Application {
         toStore.setText("To Store");
         toStore.setOnAction(e -> {
             sceneCreator = new StoreSceneCreator();
-            actualStage.setScene(sceneCreator.create(actualStage, userScene, data, owner, xmlFile, textAreaXML));
+            actualStage.setScene(sceneCreator.create(actualStage, userScene, Items.data, owner, xmlFile, textAreaXML));
         });
 
 

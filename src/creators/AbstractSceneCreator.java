@@ -1,6 +1,5 @@
 package creators;
 
-import classes.Item;
 import classes.Owner;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
