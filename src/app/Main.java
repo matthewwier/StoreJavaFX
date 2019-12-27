@@ -24,6 +24,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 import classes.User;
+import xmlworker.XMLWorker;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -36,23 +37,21 @@ import static forms.UserForm.UserForm;
 import static xmloperations.XMLOperations.*;
 
 public class Main extends Application {
+
     private AbstractSceneCreator sceneCreator;
 
     private Stage actualStage;
     private Scene loginScene;
     private Scene registerScene;
     private Scene userScene;
-
     private List<User> userList;
     private final ObservableList<Item> data =
             FXCollections.observableArrayList();
     private final ObservableList<Employee> employees =
             FXCollections.observableArrayList();
     private Owner owner = null;
-
-    private HBox hb;
-    private TableView<Item> table;
     private File xmlFile;
+
 
 
     public void fillArrayList() {
