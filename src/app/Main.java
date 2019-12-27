@@ -6,6 +6,7 @@ import classes.Owner;
 import creators.AbstractSceneCreator;
 import creators.DetailsSceneCreator;
 import creators.StoreSceneCreator;
+import decorators.LoginFormDecorator;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -39,11 +40,12 @@ import static xmloperations.XMLOperations.*;
 public class Main extends Application {
 
     private AbstractSceneCreator sceneCreator;
-
     private Stage actualStage;
     private Scene loginScene;
     private Scene registerScene;
     private Scene userScene;
+
+
     private List<User> userList;
     private final ObservableList<Item> data =
             FXCollections.observableArrayList();
@@ -132,7 +134,7 @@ public class Main extends Application {
 
         // LOGIN - przejście do UserForm as scene
         GridPane userPane = UserForm();
-        addUserFormControls(userPane, actualStage);
+        //addUserFormControls(userPane, actualStage);
 
         userScene = new Scene(userPane, 800, 400);
         loginButton.setOnAction(e ->

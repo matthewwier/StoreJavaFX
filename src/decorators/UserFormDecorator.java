@@ -3,14 +3,10 @@ package decorators;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class UserFormDecorator implements FormDecorator {
-
-    private GridPane gridPane;
-    private Stage stage;
+public class UserFormDecorator extends FormDecorator {
 
     public UserFormDecorator(GridPane gridPane, Stage stage) {
-        this.gridPane = gridPane;
-        this.stage = stage;
+        super(gridPane, stage);
     }
 
     @Override

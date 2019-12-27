@@ -1,16 +1,14 @@
 package decorators;
 
+
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class LoginFormDecorator implements FormDecorator {
+public class LoginFormDecorator extends FormDecorator {
 
-    private GridPane gridPane;
-    private Stage stage;
 
-    LoginFormDecorator(GridPane gridPane, Stage stage){
-        this.gridPane = gridPane;
-        this.stage = stage;
+    public LoginFormDecorator(GridPane gridPane, Stage stage) {
+        super(gridPane, stage);
     }
 
     @Override
