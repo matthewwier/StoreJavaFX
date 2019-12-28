@@ -18,6 +18,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 import xmloperations.XMLOperations;
+import xmlworker.XMLWorker;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -70,6 +71,11 @@ public class DetailsSceneCreator implements AbstractSceneCreator {
         ageField.setPromptText("Age");
 
         final Button addButton = new Button("Add");
+
+        XMLWorker worker = XMLWorker.getInstance();
+        worker.setDocumentBuilder();
+        worker.setXmlFile(xmlFile);
+
         addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -80,7 +86,7 @@ public class DetailsSceneCreator implements AbstractSceneCreator {
                 data.add(employee);
 
                 try {
-                    XMLOperations.addEmployeeToXMLFile(employee, xmlFile);
+                    worker.addEmployeeToXMLFile(employee);
                 } catch (ParserConfigurationException | IOException | SAXException | TransformerException ex) {
                     ex.printStackTrace();
                 }
@@ -109,7 +115,7 @@ public class DetailsSceneCreator implements AbstractSceneCreator {
                     if (next.getFirstname().equals(nameToDelete)) {
                         System.out.println("remove" + next.getFirstname());
                         try {
-                            XMLOperations.removeEmployeeFromXMLFile(next, xmlFile);
+                            worker.removeEmployeeFromXMLFile(next);
                         } catch (ParserConfigurationException | IOException | TransformerException | SAXException ex) {
                             ex.printStackTrace();
                         }
@@ -120,7 +126,7 @@ public class DetailsSceneCreator implements AbstractSceneCreator {
                                 && next.getLastname().equals(employee.getLastname()) && next.getAge().equals(employee.getAge())) {
                             System.out.println("remove" + next.getFirstname());
                             try {
-                                XMLOperations.removeEmployeeFromXMLFile(next, xmlFile);
+                                worker.removeEmployeeFromXMLFile(next);
                             } catch (ParserConfigurationException | IOException | TransformerException | SAXException ex) {
                                 ex.printStackTrace();
                             }
@@ -136,7 +142,7 @@ public class DetailsSceneCreator implements AbstractSceneCreator {
         backToUserButton.setOnAction(e -> {
                     // aktualizacja pliku
                     try {
-                        textArea.setText(XMLOperations.readXMLFile(xmlFile));
+                        textArea.setText(worker.readXMLFile());
                     } catch (IOException | SAXException | ParserConfigurationException ex) {
                         ex.printStackTrace();
                     }

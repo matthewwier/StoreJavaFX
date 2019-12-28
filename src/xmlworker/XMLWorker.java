@@ -30,16 +30,18 @@ public class XMLWorker {
     private File xmlFile;
     private DocumentBuilder dBuilder;
 
-    public static XMLWorker getInstance(){
-        if(xmlWorker == null){
-                xmlWorker = new XMLWorker();
+    private XMLWorker() {
+    }
+
+    public static XMLWorker getInstance() {
+        if (xmlWorker == null) {
+            xmlWorker = new XMLWorker();
 
         }
         return xmlWorker;
     }
 
-    public void setDocumentBuilder(){
-        StringBuilder stringBuilder = new StringBuilder();
+    public void setDocumentBuilder() {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         try {
             dBuilder = dbFactory.newDocumentBuilder();
@@ -47,6 +49,7 @@ public class XMLWorker {
             e.printStackTrace();
         }
     }
+
     public void setXmlFile(File xmlFile) {
         this.xmlFile = xmlFile;
     }
@@ -251,7 +254,7 @@ public class XMLWorker {
 
 
         document.getDocumentElement().normalize();
-        // append new child
+
         NodeList nodeList = document.getElementsByTagName("employee");
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
@@ -273,7 +276,6 @@ public class XMLWorker {
         StreamResult res = new StreamResult(xmlFile.getAbsolutePath());
         transform.transform(src, res);
     }
-
 
 
 }

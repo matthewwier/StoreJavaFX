@@ -16,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 import xmloperations.XMLOperations;
+import xmlworker.XMLWorker;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -67,6 +68,10 @@ public class StoreSceneCreator implements AbstractSceneCreator {
         descField.setMaxWidth(descCol.getPrefWidth());
         descField.setPromptText("Description");
 
+        XMLWorker worker = XMLWorker.getInstance();
+        worker.setXmlFile(xmlFile);
+        worker.setDocumentBuilder();
+
         final Button addButton = new Button("Add");
         addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -78,7 +83,7 @@ public class StoreSceneCreator implements AbstractSceneCreator {
                 data.add(item);
 
                 try {
-                    XMLOperations.addItemToXMLFile(item, xmlFile);
+                    worker.addItemToXMLFile(item);
                 } catch (ParserConfigurationException | IOException | SAXException | TransformerException ex) {
                     ex.printStackTrace();
                 }
@@ -99,7 +104,7 @@ public class StoreSceneCreator implements AbstractSceneCreator {
             @Override
             public void handle(ActionEvent e) {
                 Item item = table.getSelectionModel().getSelectedItem();
-//                System.out.println(item.getName());
+
                 String nameToDelete = deleteName.getText();
                 Iterator<Item> it = data.iterator();
                 while (it.hasNext()) {
@@ -109,7 +114,7 @@ public class StoreSceneCreator implements AbstractSceneCreator {
                         it.remove();
 
                         try {
-                            XMLOperations.removeItemFromXMLFile(next, xmlFile);
+                            worker.removeItemFromXMLFile(next);
                         } catch (ParserConfigurationException | SAXException | IOException | TransformerException ex) {
                             ex.printStackTrace();
                         }
@@ -119,7 +124,7 @@ public class StoreSceneCreator implements AbstractSceneCreator {
                                 && next.getDescription().equals(item.getDescription()) && next.getAmount().equals(item.getAmount())) {
                             System.out.println("remove" + next.getName());
                             try {
-                                XMLOperations.removeItemFromXMLFile(next, xmlFile);
+                                worker.removeItemFromXMLFile(next);
                             } catch (ParserConfigurationException | IOException | TransformerException | SAXException ex) {
                                 ex.printStackTrace();
                             }
@@ -134,7 +139,7 @@ public class StoreSceneCreator implements AbstractSceneCreator {
         final Button backToUserButton = new Button("Back to XML file");
         backToUserButton.setOnAction(e -> {
                     try {
-                        textArea.setText(XMLOperations.readXMLFile(xmlFile));
+                        textArea.setText(worker.readXMLFile());
                     } catch (IOException | SAXException | ParserConfigurationException ex) {
                         ex.printStackTrace();
                     }

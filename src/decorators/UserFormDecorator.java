@@ -17,14 +17,13 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
+import xmlworker.XMLWorker;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 
 import static scenes.ScenesDetails.*;
-import static xmloperations.XMLOperations.*;
-import static xmloperations.XMLOperations.addOwnerFromXMLFile;
 
 public class UserFormDecorator extends FormDecorator {
 
@@ -50,11 +49,15 @@ public class UserFormDecorator extends FormDecorator {
                 e -> {
                     xmlFile = fileChooser.showOpenDialog(stage);
                     try {
-                        textAreaXML.setText(readXMLFile(xmlFile));
+                        XMLWorker worker = XMLWorker.getInstance();
+                        worker.setDocumentBuilder();
+                        worker.setXmlFile(xmlFile);
+                        textAreaXML.setText(worker.readXMLFile());
                         if (Employees.employees.size() == 0) {
-                            addItemsDataFromXMLFile(xmlFile, Items.data);
-                            addEmployeesDataFromXMLFile(xmlFile, Employees.employees);
-                            owner = addOwnerFromXMLFile(xmlFile);
+
+                            worker.addItemsDataFromXMLFile(Items.data);
+                            worker.addEmployeesDataFromXMLFile(Employees.employees);
+                            owner = worker.addOwnerFromXMLFile();
                         }
 
                     } catch (IOException | ParserConfigurationException | SAXException | TransformerException ex) {
@@ -96,7 +99,6 @@ public class UserFormDecorator extends FormDecorator {
 
         gridPane.add(toStore, 3, 2);
     }
-
 
 
 }
