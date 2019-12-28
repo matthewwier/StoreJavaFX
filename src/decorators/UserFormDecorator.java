@@ -28,7 +28,7 @@ import static scenes.ScenesDetails.*;
 public class UserFormDecorator extends FormDecorator {
 
 
-    public UserFormDecorator(GridPane gridPane, Stage stage) {
+    UserFormDecorator(GridPane gridPane, Stage stage) {
         super(gridPane, stage);
     }
 
