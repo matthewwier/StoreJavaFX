@@ -15,7 +15,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
-import xmloperations.XMLOperations;
 import xmlworker.XMLWorker;
 
 import javax.xml.parsers.ParserConfigurationException;

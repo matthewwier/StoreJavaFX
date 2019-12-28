@@ -1,7 +1,6 @@
 package creators;
 
 import classes.Employee;
-import classes.Item;
 import classes.Owner;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,7 +16,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
-import xmloperations.XMLOperations;
 import xmlworker.XMLWorker;
 
 import javax.xml.parsers.ParserConfigurationException;
