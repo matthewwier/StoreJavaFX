@@ -62,14 +62,11 @@ public class LoginFormDecorator extends FormDecorator {
         registerButton.setPrefWidth(100);
 
 
-        // LOGIN - przejście do UserForm as scene
         GridPane userPane = UserForm();
-        //addUserFormControls(userPane, actualStage);
 
         UserFormDecorator userFormDecorator = new UserFormDecorator(userPane, stage);
         userFormDecorator.addControls();
 
-        //userScene = new Scene(userPane, 800, 400);
         loginButton.setOnAction(e ->
         {
             String typedLogin = usernameField.getText();

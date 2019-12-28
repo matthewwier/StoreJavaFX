@@ -1,17 +1,11 @@
 package app;
 
-
-import creators.AbstractSceneCreator;
 import data.Users;
 import decorators.LoginFormDecorator;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
 
 import static forms.LoginForm.LoginForm;
 import static scenes.ScenesDetails.*;
@@ -22,7 +16,7 @@ public class Main extends Application {
     private Stage actualStage;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
 
         actualStage = primaryStage;
         initLoginScene();
@@ -31,9 +25,8 @@ public class Main extends Application {
     }
 
 
-    public void initLoginScene() throws ParserConfigurationException, SAXException, IOException {
-        Users.addUsers();
-        Users.fillArrayList();
+    private void initLoginScene() {
+        fillWithDefaultData();
 
         actualStage.setTitle("Store Management");
         GridPane gridPane = LoginForm();
@@ -45,7 +38,7 @@ public class Main extends Application {
         actualStage.setScene(loginScene);
     }
 
-    public void fillWithDefaultData() {
+    private void fillWithDefaultData() {
         Users.addUsers();
         Users.fillArrayList();
     }
