@@ -3,6 +3,8 @@ package decorators;
 
 import classes.User;
 import data.Users;
+import factory.AbstractFormFactory;
+import factory.FormFactory;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -15,7 +17,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-import static forms.UserForm.UserForm;
 import static scenes.ScenesDetails.*;
 
 public class LoginFormDecorator extends FormDecorator {
@@ -61,8 +62,8 @@ public class LoginFormDecorator extends FormDecorator {
         registerButton.setDefaultButton(true);
         registerButton.setPrefWidth(100);
 
-
-        GridPane userPane = UserForm();
+        AbstractFormFactory factory = new FormFactory();
+        GridPane userPane = factory.createUserForm();
 
         UserFormDecorator userFormDecorator = new UserFormDecorator(userPane, stage);
         userFormDecorator.addControls();
@@ -87,7 +88,8 @@ public class LoginFormDecorator extends FormDecorator {
         GridPane.setHalignment(registerButton, HPos.RIGHT);
         GridPane.setMargin(registerButton, new Insets(20, 250, 20, 0));
 
-        GridPane registerPane = UserForm();
+
+        GridPane registerPane = factory.createUserForm();
         RegisterFormDecorator registerFormDecorator = new RegisterFormDecorator(registerPane, stage);
         registerFormDecorator.addControls();
 

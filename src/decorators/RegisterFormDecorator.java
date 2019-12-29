@@ -1,6 +1,8 @@
 package decorators;
 
 import data.Users;
+import factory.AbstractFormFactory;
+import factory.FormFactory;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -10,7 +12,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-import static forms.UserForm.UserForm;
 import static scenes.ScenesDetails.loginScene;
 import static scenes.ScenesDetails.userScene;
 
@@ -61,8 +62,8 @@ public class RegisterFormDecorator extends FormDecorator {
         registerButton.setDefaultButton(true);
         registerButton.setPrefWidth(100);
 
-
-        GridPane userPane = UserForm();
+        AbstractFormFactory factory = new FormFactory();
+        GridPane userPane = factory.createUserForm();
         UserFormDecorator userFormDecorator = new UserFormDecorator(userPane, stage);
         userFormDecorator.addControls();
 

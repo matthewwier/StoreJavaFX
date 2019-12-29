@@ -2,12 +2,13 @@ package app;
 
 import data.Users;
 import decorators.LoginFormDecorator;
+import factory.AbstractFormFactory;
+import factory.FormFactory;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import static forms.LoginForm.LoginForm;
 import static scenes.ScenesDetails.*;
 
 
@@ -29,7 +30,9 @@ public class Main extends Application {
         fillWithDefaultData();
 
         actualStage.setTitle("Store Management");
-        GridPane gridPane = LoginForm();
+
+        AbstractFormFactory factory = new FormFactory();
+        GridPane gridPane = factory.createLoginForm();
 
         LoginFormDecorator loginFormDecorator = new LoginFormDecorator(gridPane, actualStage);
         loginFormDecorator.addControls();
