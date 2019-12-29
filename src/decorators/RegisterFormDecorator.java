@@ -17,7 +17,7 @@ import static scenes.ScenesDetails.userScene;
 public class RegisterFormDecorator extends FormDecorator {
 
 
-    RegisterFormDecorator(GridPane gridPane, Stage stage) {
+    public RegisterFormDecorator(GridPane gridPane, Stage stage) {
         super(gridPane, stage);
     }
 

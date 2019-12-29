@@ -27,11 +27,14 @@ public class Main extends Application {
 
     private void initLoginScene() {
         fillWithDefaultData();
+
         actualStage.setTitle("Store Management");
         GridPane gridPane = LoginForm();
+
         LoginFormDecorator loginFormDecorator = new LoginFormDecorator(gridPane, actualStage);
         loginFormDecorator.addControls();
-        loginScene = new Scene(LoginForm(), 800, 400);
+
+        loginScene = new Scene(gridPane, 800, 400);
         actualStage.setScene(loginScene);
     }
 
