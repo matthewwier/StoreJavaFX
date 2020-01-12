@@ -1,7 +1,10 @@
 package classes;
 
 import javafx.beans.property.SimpleStringProperty;
-
+/**
+ * Class defines item.
+ *
+ */
 public class Item {
 
     private final SimpleStringProperty name;

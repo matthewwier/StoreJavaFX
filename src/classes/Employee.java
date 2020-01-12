@@ -1,7 +1,10 @@
 package classes;
 
 import javafx.beans.property.SimpleStringProperty;
-
+/**
+ * Class defines employee.
+ *
+ */
 public class Employee {
     private final SimpleStringProperty firstname;
     private final SimpleStringProperty lastname;

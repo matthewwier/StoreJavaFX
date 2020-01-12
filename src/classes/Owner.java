@@ -1,5 +1,8 @@
 package classes;
-
+/**
+ * Class defines owner.
+ *
+ */
 public class Owner {
     private final String firstname;
     private final String lastname;
