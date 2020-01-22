@@ -22,17 +22,28 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 
+
+/**
+ * Singleton class for operations on XML file.
+ *
+ */
 public class XMLWorker {
 
+    /** Instance of XMLWorker class  */
     private static XMLWorker xmlWorker;
 
-
+    /** XML file to make operations */
     private File xmlFile;
+    /** Instance of document builder, help to process XML file */
     private DocumentBuilder dBuilder;
 
     private XMLWorker() {
     }
 
+    /**
+     * Return instance of XML worker.
+     * @return xml worker
+     */
     public static XMLWorker getInstance() {
         if (xmlWorker == null) {
             xmlWorker = new XMLWorker();
@@ -41,10 +52,17 @@ public class XMLWorker {
         return xmlWorker;
     }
 
+    /**
+     * Get xml file
+     * @return xml file
+     */
     public File getXmlFile(){
         return xmlFile;
     }
-
+    /**
+     * Set document builder
+     *
+     */
     public void setDocumentBuilder() {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         try {
@@ -54,10 +72,18 @@ public class XMLWorker {
         }
     }
 
+    /**
+     * Set xml file
+     * @param  xmlFile xml file
+     */
     public void setXmlFile(File xmlFile) {
         this.xmlFile = xmlFile;
     }
 
+    /**
+     * Add items from xml file
+     * @param  items list of items
+     */
     public void addItemsDataFromXMLFile(ObservableList<Item> items) throws ParserConfigurationException, IOException, SAXException, TransformerException {
         Document document = dBuilder.parse(xmlFile);
 
@@ -77,6 +103,10 @@ public class XMLWorker {
         }
     }
 
+    /**
+     * Add employees from xml file
+     * @param  employees list of employees
+     */
     public void addEmployeesDataFromXMLFile(ObservableList<Employee> employees) throws ParserConfigurationException, IOException, SAXException {
         Document document = dBuilder.parse(xmlFile);
         document.getDocumentElement().normalize();
@@ -94,6 +124,10 @@ public class XMLWorker {
         }
     }
 
+    /**
+     * Add owner from xml file
+     * @return owner of store
+     */
     public Owner addOwnerFromXMLFile() throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -115,6 +149,10 @@ public class XMLWorker {
         return null;
     }
 
+    /**
+     * Read xml file
+     * @return xml file string representation
+     */
     public String readXMLFile() throws IOException, SAXException, ParserConfigurationException {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -165,6 +203,10 @@ public class XMLWorker {
         return stringBuilder.toString();
     }
 
+    /**
+     * Add item to xml file
+     * @param  item item to add
+     */
     public void addItemToXMLFile(Item item) throws ParserConfigurationException, IOException, SAXException, TransformerException {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -197,6 +239,10 @@ public class XMLWorker {
         transform.transform(src, res);
     }
 
+    /**
+     * Remove item from xml file
+     * @param  item item to remove
+     */
     public void removeItemFromXMLFile(Item item) throws ParserConfigurationException, IOException, SAXException, TransformerException {
 
         Document document = dBuilder.parse(xmlFile);
@@ -224,6 +270,10 @@ public class XMLWorker {
         transform.transform(src, res);
     }
 
+    /**
+     * Add employee to xml file
+     * @param  employee employee to add
+     */
     public void addEmployeeToXMLFile(Employee employee) throws ParserConfigurationException, IOException, SAXException, TransformerException {
 
         Document document = dBuilder.parse(xmlFile);
@@ -252,7 +302,10 @@ public class XMLWorker {
         StreamResult res = new StreamResult(xmlFile.getAbsolutePath());
         transform.transform(src, res);
     }
-
+    /**
+     * Remove employee from xml file
+     * @param  employee employee to remove
+     */
     public void removeEmployeeFromXMLFile(Employee employee) throws ParserConfigurationException, IOException, SAXException, TransformerException {
         Document document = dBuilder.parse(xmlFile);
 

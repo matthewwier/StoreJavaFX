@@ -22,6 +22,11 @@ import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.Iterator;
 
+
+/**
+ * Factory for details scene.
+ *
+ */
 public class DetailsSceneCreator implements SceneFactory {
     @Override
     public Scene createScene() {
@@ -136,13 +141,12 @@ public class DetailsSceneCreator implements SceneFactory {
 
         final Button backToUserButton = new Button("Back to XML file");
         backToUserButton.setOnAction(e -> {
-                    // aktualizacja pliku
                     try {
                         ApplicationContext.getInstance().textArea().setText(worker.readXMLFile());
                     } catch (IOException | SAXException | ParserConfigurationException ex) {
                         ex.printStackTrace();
                     }
-                    ApplicationContext.getInstance().getActualStage().setScene(new UserSceneFactory().createScene());
+                    ApplicationContext.getInstance().getActualStage().setScene(new UserSceneCreator().createScene());
                 }
         );
 

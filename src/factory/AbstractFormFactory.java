@@ -1,9 +1,11 @@
 package factory;
 
-import forms.LoginForm;
-import forms.UserForm;
+import javafx.scene.layout.GridPane;
 
+/**
+ * Interface factory for creating forms.
+ *
+ */
 public interface AbstractFormFactory {
-    LoginForm createLoginForm();
-    UserForm createUserForm();
+    GridPane createForm();
 }

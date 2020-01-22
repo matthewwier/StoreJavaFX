@@ -21,6 +21,10 @@ import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.util.Iterator;
 
+/**
+ * Factory for store scene.
+ *
+ */
 public class StoreSceneCreator implements SceneFactory {
 
     @Override
@@ -140,7 +144,7 @@ public class StoreSceneCreator implements SceneFactory {
                     } catch (IOException | SAXException | ParserConfigurationException ex) {
                         ex.printStackTrace();
                     }
-                    ApplicationContext.getInstance().getActualStage().setScene(new UserSceneFactory().createScene());
+                    ApplicationContext.getInstance().getActualStage().setScene(new UserSceneCreator().createScene());
                 }
         );
 

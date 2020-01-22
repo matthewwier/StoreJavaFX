@@ -1,5 +1,6 @@
 package decorators;
 
+import context.ApplicationContext;
 import data.Users;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -7,15 +8,17 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
-import scenes.LoginSceneFactory;
+import scenes.LoginSceneCreator;
 
-
+/**
+ * Decorator for Register Form
+ *
+ */
 public class RegisterFormDecorator implements FormDecorator {
 
 
     @Override
-    public void addControls(GridPane gridPane, Stage stage) {
+    public void addControls(GridPane gridPane) {
         Label headerLabel = new Label("SIGN UP");
         headerLabel.setFont(Font.font("Helvetica", FontWeight.BOLD, 24));
         gridPane.add(headerLabel, 0, 0, 2, 1);
@@ -69,7 +72,8 @@ public class RegisterFormDecorator implements FormDecorator {
                 alert2.setTitle("Registration");
                 alert2.setHeaderText("User registered successfully!");
                 alert2.show();
-                stage.setScene(new LoginSceneFactory().createScene());
+                ApplicationContext.getInstance()
+                        .getActualStage().setScene(new LoginSceneCreator().createScene());
             }
 
         });

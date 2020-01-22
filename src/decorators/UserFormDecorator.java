@@ -23,10 +23,15 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 
+
+/**
+ * Decorator for User Form
+ *
+ */
 public class UserFormDecorator implements FormDecorator {
 
     @Override
-    public void addControls(GridPane gridPane, Stage stage) {
+    public void addControls(GridPane gridPane) {
         Label infoLabel = new Label("List of elements of your XML file:");
         infoLabel.setFont(Font.font("Helvetica", FontWeight.BOLD, 20));
         gridPane.add(infoLabel, 1, 0, 2, 1);
@@ -53,7 +58,8 @@ public class UserFormDecorator implements FormDecorator {
                     try {
                         XMLWorker worker = XMLWorker.getInstance();
                         worker.setDocumentBuilder();
-                        XMLWorker.getInstance().setXmlFile(fileChooser.showOpenDialog(stage));
+                        XMLWorker.getInstance().setXmlFile(fileChooser.showOpenDialog(ApplicationContext.getInstance()
+                                .getActualStage()));
                         //worker.setXmlFile(xmlFile);
                         textAreaXML.setText(worker.readXMLFile());
                         if (Employees.employees.size() == 0) {
@@ -83,7 +89,8 @@ public class UserFormDecorator implements FormDecorator {
         Button detailsButton = new Button("See store details");
         detailsButton.setMinWidth(150);
         detailsButton.setOnAction(e -> {
-                    stage.setScene(new DetailsSceneCreator().createScene());
+            ApplicationContext.getInstance()
+                    .getActualStage().setScene(new DetailsSceneCreator().createScene());
                 }
         );
 
@@ -94,7 +101,8 @@ public class UserFormDecorator implements FormDecorator {
         Button toStore = new Button();
         toStore.setText("To Store");
         toStore.setOnAction(e -> {
-            stage.setScene(new StoreSceneCreator().createScene());
+            ApplicationContext.getInstance()
+                    .getActualStage().setScene(new StoreSceneCreator().createScene());
         });
 
 

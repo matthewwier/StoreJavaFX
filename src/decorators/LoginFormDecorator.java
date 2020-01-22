@@ -2,9 +2,9 @@ package decorators;
 
 
 import classes.User;
+import context.ApplicationContext;
 import data.Users;
-import factory.AbstractFormFactory;
-import factory.FormFactory;
+import factory.UserFormFactory;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -15,15 +15,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
-import scenes.RegisterSceneFactory;
+import scenes.RegisterSceneCreator;
 
-
+/**
+ * Decorator Login Form
+ *
+ */
 public class LoginFormDecorator implements FormDecorator {
 
 
     @Override
-    public void addControls(GridPane gridPane, Stage stage) {
+    public void addControls(GridPane gridPane) {
         Label headerLabel = new Label("SIGN IN");
         headerLabel.setFont(Font.font("Helvetica", FontWeight.BOLD, 24));
         gridPane.add(headerLabel, 0, 0, 2, 1);
@@ -58,11 +60,10 @@ public class LoginFormDecorator implements FormDecorator {
         registerButton.setDefaultButton(true);
         registerButton.setPrefWidth(100);
 
-        AbstractFormFactory factory = new FormFactory();
-        GridPane userPane = factory.createUserForm();
+        GridPane userPane = new UserFormFactory().createForm();
 
         UserFormDecorator userFormDecorator = new UserFormDecorator();
-        userFormDecorator.addControls(userPane, stage);
+        userFormDecorator.addControls(userPane);
 
         loginButton.setOnAction(e ->
         {
@@ -71,7 +72,7 @@ public class LoginFormDecorator implements FormDecorator {
             for (User user : Users.userList) {
                 if (user.getLogin().equals(typedLogin)) {
                     if (user.getPassword().equals(typedPassword)) {
-                        stage.setScene(new Scene(userPane, 800, 400));
+                        ApplicationContext.getInstance().getActualStage().setScene(new Scene(userPane, 800, 400));
                     }
                 }
             }
@@ -86,7 +87,7 @@ public class LoginFormDecorator implements FormDecorator {
 
         registerButton.setOnAction(e ->
         {
-            stage.setScene(new RegisterSceneFactory().createScene());
+            ApplicationContext.getInstance().getActualStage().setScene(new RegisterSceneCreator().createScene());
         });
     }
 

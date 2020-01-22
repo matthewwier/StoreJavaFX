@@ -7,6 +7,11 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
+
+/**
+ * Class represents Login Form
+ *
+ */
 public class LoginForm extends GridPane {
 
     public LoginForm(){

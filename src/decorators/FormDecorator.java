@@ -2,8 +2,15 @@ package decorators;
 
 
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
+/**
+ * Decorator interface for grid panes.
+ *
+ */
 public interface FormDecorator {
-    public void addControls(GridPane gridPane, Stage stage);
+    /**
+     * Add controls to given grid pane and stage.
+     * @param gridPane Grid pane to decorate
+     */
+    public void addControls(GridPane gridPane);
 }

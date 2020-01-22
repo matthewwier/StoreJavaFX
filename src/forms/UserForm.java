@@ -6,6 +6,10 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+/**
+ * Class represents User Form
+ *
+ */
 public class UserForm extends GridPane {
 
     public UserForm() {
