@@ -1,5 +1,5 @@
 /**
- * Provides Main class to launch application.
+ * Provides main class to launch the application.
  *
  */
 package app;

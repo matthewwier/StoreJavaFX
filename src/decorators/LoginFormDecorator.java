@@ -16,18 +16,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-
-import static scenes.ScenesDetails.*;
-
-public class LoginFormDecorator extends FormDecorator {
+import scenes.RegisterSceneFactory;
 
 
-    public LoginFormDecorator(GridPane gridPane, Stage stage) {
-        super(gridPane, stage);
-    }
+public class LoginFormDecorator implements FormDecorator {
+
 
     @Override
-    public void addControls() {
+    public void addControls(GridPane gridPane, Stage stage) {
         Label headerLabel = new Label("SIGN IN");
         headerLabel.setFont(Font.font("Helvetica", FontWeight.BOLD, 24));
         gridPane.add(headerLabel, 0, 0, 2, 1);
@@ -65,8 +61,8 @@ public class LoginFormDecorator extends FormDecorator {
         AbstractFormFactory factory = new FormFactory();
         GridPane userPane = factory.createUserForm();
 
-        UserFormDecorator userFormDecorator = new UserFormDecorator(userPane, stage);
-        userFormDecorator.addControls();
+        UserFormDecorator userFormDecorator = new UserFormDecorator();
+        userFormDecorator.addControls(userPane, stage);
 
         loginButton.setOnAction(e ->
         {
@@ -88,15 +84,9 @@ public class LoginFormDecorator extends FormDecorator {
         GridPane.setHalignment(registerButton, HPos.RIGHT);
         GridPane.setMargin(registerButton, new Insets(20, 250, 20, 0));
 
-
-        GridPane registerPane = factory.createUserForm();
-        RegisterFormDecorator registerFormDecorator = new RegisterFormDecorator(registerPane, stage);
-        registerFormDecorator.addControls();
-
-        registerScene = new Scene(registerPane, 800, 400);
         registerButton.setOnAction(e ->
         {
-            stage.setScene(registerScene);
+            stage.setScene(new RegisterSceneFactory().createScene());
         });
     }
 

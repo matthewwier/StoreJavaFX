@@ -1,8 +1,8 @@
-package creators;
+package scenes;
 
 import classes.Employee;
-import classes.Owner;
-import javafx.collections.ObservableList;
+import context.ApplicationContext;
+import data.Employees;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,26 +14,24 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 import xmlworker.XMLWorker;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
-public class DetailsSceneCreator implements AbstractSceneCreator {
+public class DetailsSceneCreator implements SceneFactory {
     @Override
-    public Scene create(Stage actualStage, Scene userScene, ObservableList data, Owner owner, File xmlFile, TextArea textArea) {
+    public Scene createScene() {
         Scene storeScene = new Scene(new Group(), 800, 400);
         TableView<Employee> table = new TableView<Employee>();
         table.setMaxHeight(240);
         HBox hb = new HBox();
         HBox del = new HBox();
 
-        Label ownerLabel = new Label("Owner:" + owner.getFirstname() + " " + owner.getLastname());
+        Label ownerLabel = new Label("Owner:" + ApplicationContext.getInstance().getOwner().getFirstname() + " " + ApplicationContext.getInstance().getOwner().getLastname());
         ownerLabel.setFont(new Font("Arial", 20));
         Label label = new Label("Store employees:");
         label.setFont(new Font("Arial", 20));
@@ -55,7 +53,7 @@ public class DetailsSceneCreator implements AbstractSceneCreator {
         ageCol.setCellValueFactory(
                 new PropertyValueFactory<Employee, String>("age"));
 
-        table.setItems(data);
+        table.setItems(Employees.employees);
         table.getColumns().addAll(firstNameCol, lastnameCol, ageCol);
 
         final TextField firstnameField = new TextField();
@@ -72,7 +70,7 @@ public class DetailsSceneCreator implements AbstractSceneCreator {
 
         XMLWorker worker = XMLWorker.getInstance();
         worker.setDocumentBuilder();
-        worker.setXmlFile(xmlFile);
+        worker.setXmlFile(worker.getXmlFile());
 
         addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -81,7 +79,7 @@ public class DetailsSceneCreator implements AbstractSceneCreator {
                         firstnameField.getText(),
                         lastnameField.getText(),
                         ageField.getText());
-                data.add(employee);
+                Employees.employees.add(employee);
 
                 try {
                     worker.addEmployeeToXMLFile(employee);
@@ -107,7 +105,7 @@ public class DetailsSceneCreator implements AbstractSceneCreator {
                 Employee employee = table.getSelectionModel().getSelectedItem();
 
                 String nameToDelete = deleteName.getText();
-                Iterator<Employee> it = data.iterator();
+                Iterator<Employee> it = Employees.employees.iterator();
                 while (it.hasNext()) {
                     Employee next = it.next();
                     if (next.getFirstname().equals(nameToDelete)) {
@@ -140,11 +138,11 @@ public class DetailsSceneCreator implements AbstractSceneCreator {
         backToUserButton.setOnAction(e -> {
                     // aktualizacja pliku
                     try {
-                        textArea.setText(worker.readXMLFile());
+                        ApplicationContext.getInstance().textArea().setText(worker.readXMLFile());
                     } catch (IOException | SAXException | ParserConfigurationException ex) {
                         ex.printStackTrace();
                     }
-                    actualStage.setScene(userScene);
+                    ApplicationContext.getInstance().getActualStage().setScene(new UserSceneFactory().createScene());
                 }
         );
 

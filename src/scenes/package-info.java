@@ -1,5 +1,5 @@
 /**
- * Provides access to scenes occuring in application.
+ * Provides factories for creation of scenes.
  *
  */
 package scenes;

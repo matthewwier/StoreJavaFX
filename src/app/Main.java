@@ -1,44 +1,33 @@
 package app;
 
 import data.Users;
-import decorators.LoginFormDecorator;
-import factory.AbstractFormFactory;
-import factory.FormFactory;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
-import static scenes.ScenesDetails.*;
+import context.ApplicationContext;
+import scenes.LoginSceneFactory;
 
 
 public class Main extends Application {
 
-    private Stage actualStage;
+    private ApplicationContext context;
 
     @Override
     public void start(Stage primaryStage) {
 
-        actualStage = primaryStage;
+        context = ApplicationContext.getInstance();
+        //actualStage = primaryStage;
+        context.setActualStage(primaryStage);
         initLoginScene();
-        actualStage.show();
+        context.getActualStage().show();
+        //actualStage.show();
 
     }
 
 
     private void initLoginScene() {
         fillWithDefaultData();
-
-        actualStage.setTitle("Store Management");
-
-        AbstractFormFactory factory = new FormFactory();
-        GridPane gridPane = factory.createLoginForm();
-
-        LoginFormDecorator loginFormDecorator = new LoginFormDecorator(gridPane, actualStage);
-        loginFormDecorator.addControls();
-
-        loginScene = new Scene(gridPane, 800, 400);
-        actualStage.setScene(loginScene);
+        context.getActualStage().setTitle("Store Management");
+        context.getActualStage().setScene(new LoginSceneFactory().createScene());
     }
 
     private void fillWithDefaultData() {

@@ -1,8 +1,5 @@
 package decorators;
 
-import creators.AbstractSceneCreator;
-import creators.DetailsSceneCreator;
-import creators.StoreSceneCreator;
 import data.Employees;
 import data.Items;
 import javafx.geometry.HPos;
@@ -17,23 +14,19 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
+import context.ApplicationContext;
+import scenes.DetailsSceneCreator;
+import scenes.StoreSceneCreator;
 import xmlworker.XMLWorker;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 
-import static scenes.ScenesDetails.*;
-
-public class UserFormDecorator extends FormDecorator {
-
-
-    public UserFormDecorator(GridPane gridPane, Stage stage) {
-        super(gridPane, stage);
-    }
+public class UserFormDecorator implements FormDecorator {
 
     @Override
-    public void addControls() {
+    public void addControls(GridPane gridPane, Stage stage) {
         Label infoLabel = new Label("List of elements of your XML file:");
         infoLabel.setFont(Font.font("Helvetica", FontWeight.BOLD, 20));
         gridPane.add(infoLabel, 1, 0, 2, 1);
@@ -43,21 +36,31 @@ public class UserFormDecorator extends FormDecorator {
         FileChooser fileChooser = new FileChooser();
 
         Button openButton = new Button("Select XML file...");
-        TextArea textAreaXML = new TextArea();
+        TextArea textAreaXML = ApplicationContext.getInstance().textArea();
         textAreaXML.setWrapText(true);
+
+        if (XMLWorker.getInstance().getXmlFile() != null) {
+            XMLWorker workers = XMLWorker.getInstance();
+            try {
+                textAreaXML.setText(workers.readXMLFile());
+            } catch (IOException | SAXException | ParserConfigurationException e) {
+                e.printStackTrace();
+            }
+        }
+
         openButton.setOnAction(
                 e -> {
-                    xmlFile = fileChooser.showOpenDialog(stage);
                     try {
                         XMLWorker worker = XMLWorker.getInstance();
                         worker.setDocumentBuilder();
-                        worker.setXmlFile(xmlFile);
+                        XMLWorker.getInstance().setXmlFile(fileChooser.showOpenDialog(stage));
+                        //worker.setXmlFile(xmlFile);
                         textAreaXML.setText(worker.readXMLFile());
                         if (Employees.employees.size() == 0) {
 
                             worker.addItemsDataFromXMLFile(Items.data);
                             worker.addEmployeesDataFromXMLFile(Employees.employees);
-                            owner = worker.addOwnerFromXMLFile();
+                            ApplicationContext.getInstance().setOwner(worker.addOwnerFromXMLFile());
                         }
 
                     } catch (IOException | ParserConfigurationException | SAXException | TransformerException ex) {
@@ -72,16 +75,15 @@ public class UserFormDecorator extends FormDecorator {
         Button closeAppButton = new Button("Close app");
         closeAppButton.setMinWidth(150);
         closeAppButton.setOnAction(e -> {
-                    Stage stage = (Stage) closeAppButton.getScene().getWindow();
-                    stage.close();
+                    Stage stage1 = (Stage) closeAppButton.getScene().getWindow();
+                    stage1.close();
                 }
         );
 
         Button detailsButton = new Button("See store details");
         detailsButton.setMinWidth(150);
         detailsButton.setOnAction(e -> {
-                    AbstractSceneCreator sceneCreator = new DetailsSceneCreator();
-                    stage.setScene(sceneCreator.create(stage, userScene, Employees.employees, owner, xmlFile, textAreaXML));
+                    stage.setScene(new DetailsSceneCreator().createScene());
                 }
         );
 
@@ -92,8 +94,7 @@ public class UserFormDecorator extends FormDecorator {
         Button toStore = new Button();
         toStore.setText("To Store");
         toStore.setOnAction(e -> {
-            AbstractSceneCreator sceneCreator = new StoreSceneCreator();
-            stage.setScene(sceneCreator.create(stage, userScene, Items.data, owner, xmlFile, textAreaXML));
+            stage.setScene(new StoreSceneCreator().createScene());
         });
 
 

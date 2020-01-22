@@ -1,5 +1,5 @@
 /**
- * Provides the classes to create employees, items, owner and users
+ * Provides the classes to create mock employees, items, owner and users
  *
  */
 package data;

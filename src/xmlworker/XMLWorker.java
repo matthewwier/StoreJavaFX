@@ -41,6 +41,10 @@ public class XMLWorker {
         return xmlWorker;
     }
 
+    public File getXmlFile(){
+        return xmlFile;
+    }
+
     public void setDocumentBuilder() {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         try {

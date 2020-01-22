@@ -1,8 +1,8 @@
-package creators;
+package scenes;
 
 import classes.Item;
-import classes.Owner;
-import javafx.collections.ObservableList;
+import context.ApplicationContext;
+import data.Items;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,20 +13,18 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 import xmlworker.XMLWorker;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
-public class StoreSceneCreator implements AbstractSceneCreator {
+public class StoreSceneCreator implements SceneFactory {
 
     @Override
-    public Scene create(Stage actualStage, Scene userScene, ObservableList data, Owner owner, File xmlFile, TextArea textArea) {
+    public Scene createScene() {
         Scene storeScene = new Scene(new Group(), 800, 400);
         TableView<Item> table = new TableView<Item>();
         table.setMaxHeight(250);
@@ -54,7 +52,7 @@ public class StoreSceneCreator implements AbstractSceneCreator {
         descCol.setCellValueFactory(
                 new PropertyValueFactory<Item, String>("description"));
 
-        table.setItems(data);
+        table.setItems(Items.data);
         table.getColumns().addAll(nameCol, amountCol, descCol);
 
         final TextField nameField = new TextField();
@@ -68,7 +66,7 @@ public class StoreSceneCreator implements AbstractSceneCreator {
         descField.setPromptText("Description");
 
         XMLWorker worker = XMLWorker.getInstance();
-        worker.setXmlFile(xmlFile);
+        worker.setXmlFile(worker.getXmlFile());
         worker.setDocumentBuilder();
 
         final Button addButton = new Button("Add");
@@ -79,7 +77,7 @@ public class StoreSceneCreator implements AbstractSceneCreator {
                         nameField.getText(),
                         amountField.getText(),
                         descField.getText());
-                data.add(item);
+                Items.data.add(item);
 
                 try {
                     worker.addItemToXMLFile(item);
@@ -105,7 +103,7 @@ public class StoreSceneCreator implements AbstractSceneCreator {
                 Item item = table.getSelectionModel().getSelectedItem();
 
                 String nameToDelete = deleteName.getText();
-                Iterator<Item> it = data.iterator();
+                Iterator<Item> it = Items.data.iterator();
                 while (it.hasNext()) {
                     Item next = it.next();
                     if (next.getName().equals(nameToDelete)) {
@@ -138,11 +136,11 @@ public class StoreSceneCreator implements AbstractSceneCreator {
         final Button backToUserButton = new Button("Back to XML file");
         backToUserButton.setOnAction(e -> {
                     try {
-                        textArea.setText(worker.readXMLFile());
+                        ApplicationContext.getInstance().textArea().setText(worker.readXMLFile());
                     } catch (IOException | SAXException | ParserConfigurationException ex) {
                         ex.printStackTrace();
                     }
-                    actualStage.setScene(userScene);
+                    ApplicationContext.getInstance().getActualStage().setScene(new UserSceneFactory().createScene());
                 }
         );
 

@@ -4,9 +4,10 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
-public class LoginForm extends Form{
+public class LoginForm extends GridPane {
 
     public LoginForm(){
         setAlignment(Pos.TOP_CENTER);

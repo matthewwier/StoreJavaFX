@@ -6,7 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-public class UserForm extends Form {
+public class UserForm extends GridPane {
 
     public UserForm() {
         setAlignment(Pos.TOP_CENTER);

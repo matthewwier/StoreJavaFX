@@ -1,5 +1,5 @@
 /**
- * Provides the classes necessary to add items, users and employees
+ * Provides mock of the classes necessary to add items, users and employees
  *
  */
 package classes;

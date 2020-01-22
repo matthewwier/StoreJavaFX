@@ -1,29 +1,21 @@
 package decorators;
 
 import data.Users;
-import factory.AbstractFormFactory;
-import factory.FormFactory;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-
-import static scenes.ScenesDetails.loginScene;
-import static scenes.ScenesDetails.userScene;
-
-public class RegisterFormDecorator extends FormDecorator {
+import scenes.LoginSceneFactory;
 
 
-    public RegisterFormDecorator(GridPane gridPane, Stage stage) {
-        super(gridPane, stage);
-    }
+public class RegisterFormDecorator implements FormDecorator {
+
 
     @Override
-    public void addControls() {
+    public void addControls(GridPane gridPane, Stage stage) {
         Label headerLabel = new Label("SIGN UP");
         headerLabel.setFont(Font.font("Helvetica", FontWeight.BOLD, 24));
         gridPane.add(headerLabel, 0, 0, 2, 1);
@@ -62,12 +54,6 @@ public class RegisterFormDecorator extends FormDecorator {
         registerButton.setDefaultButton(true);
         registerButton.setPrefWidth(100);
 
-        AbstractFormFactory factory = new FormFactory();
-        GridPane userPane = factory.createUserForm();
-        UserFormDecorator userFormDecorator = new UserFormDecorator(userPane, stage);
-        userFormDecorator.addControls();
-
-        userScene = new Scene(userPane, 800, 400);
         registerButton.setOnAction(e ->
         {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
@@ -83,7 +69,7 @@ public class RegisterFormDecorator extends FormDecorator {
                 alert2.setTitle("Registration");
                 alert2.setHeaderText("User registered successfully!");
                 alert2.show();
-                stage.setScene(loginScene);
+                stage.setScene(new LoginSceneFactory().createScene());
             }
 
         });

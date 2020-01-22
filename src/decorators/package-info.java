@@ -1,5 +1,5 @@
 /**
- * Provides decorators of the forms used in application.
+ * Provides decorators for the forms which appear in the application.
  *
  */
 package decorators;
